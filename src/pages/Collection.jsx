@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import ArtworkCard from '../components/ArtworkCard'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
-import { artworks as staticArtworks, categories } from '../data/collections'
 import { useSanityQuery } from '../hooks/useSanity'
 import { ARTWORKS_QUERY } from '../lib/queries'
 import { sanityImageUrl } from '../lib/sanity'
+
+// Sabit kategori sırası ve etiketleri — Sanity şemasıyla eşleşmeli
+const CATEGORY_ORDER = ['tile', 'botanical', 'natural-dye', 'ceramic']
 
 const SANITY_CONFIGURED =
   import.meta.env.VITE_SANITY_PROJECT_ID &&
@@ -30,16 +32,22 @@ export default function Collection() {
   const { lang } = useLang()
   const [activeFilter, setActiveFilter] = useState('all')
 
-  const { data: sanityData, loading, error } = useSanityQuery(
+  const { data: sanityData, loading } = useSanityQuery(
     SANITY_CONFIGURED ? ARTWORKS_QUERY : null
   )
 
-  const artworkList = (() => {
+  const artworkList = useMemo(() => {
     if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData)) {
       return sanityData.map(normalizeSanityArtwork)
     }
     return []
-  })()
+  }, [sanityData, loading])
+
+  // Sadece içi dolu kategoriler — Sanity'deki eserlere göre otomatik
+  const activeCategories = useMemo(() => {
+    const usedCats = new Set(artworkList.map(a => a.category))
+    return CATEGORY_ORDER.filter(cat => usedCats.has(cat))
+  }, [artworkList])
 
   const filtered = activeFilter === 'all'
     ? artworkList
@@ -55,24 +63,38 @@ export default function Collection() {
         <p className="section-subtitle">{tr(t.collection.subtitle, lang)}</p>
       </div>
 
-      {/* Filter bar */}
-      <div className="max-w-7xl mx-auto px-6 mb-10">
-        <div className="flex flex-wrap gap-2">
-          {categories.map(cat => (
+      {/* Filter bar — sadece eser olan kategoriler görünür */}
+      {!loading && activeCategories.length > 1 && (
+        <div className="max-w-7xl mx-auto px-6 mb-10">
+          <div className="flex flex-wrap gap-2">
+            {/* Tümü butonu */}
             <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
+              onClick={() => setActiveFilter('all')}
               className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200
-                ${activeFilter === cat
+                ${activeFilter === 'all'
                   ? 'bg-ardea-cobalt text-white'
                   : 'bg-ardea-bej text-ardea-text-soft hover:bg-ardea-gray hover:text-ardea-text'
                 }`}
             >
-              {tr(t.collection.filter[cat], lang)}
+              {tr(t.collection.filter.all, lang)}
             </button>
-          ))}
+            {/* Dolu kategoriler */}
+            {activeCategories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200
+                  ${activeFilter === cat
+                    ? 'bg-ardea-cobalt text-white'
+                    : 'bg-ardea-bej text-ardea-text-soft hover:bg-ardea-gray hover:text-ardea-text'
+                  }`}
+              >
+                {tr(t.collection.filter[cat], lang)}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Loading state */}
       {SANITY_CONFIGURED && loading && (
