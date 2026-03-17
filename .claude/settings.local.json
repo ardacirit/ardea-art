@@ -10,7 +10,17 @@
       "Bash(npx vercel:*)",
       "Bash(cat:*)",
       "Bash(wait)",
-      "Bash(brew install:*)"
+      "Bash(brew install:*)",
+      "Bash(npx sanity@latest debug --json)",
+      "Read(//Users/ardacirit/.config/sanity/**)",
+      "Read(//Users/ardacirit/.sanity/**)",
+      "Bash(npx sanity:*)",
+      "Bash(gtimeout 5 npx sanity login)",
+      "Bash(curl -s \"https://api.sanity.io/v2021-06-07/projects/uanm61w5\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\(''''displayName'''',''''''''\\), d.get\\(''''studioHost'''',''''''''\\)\\)\")",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"fix: add vercel.json for SPA client-side routing:*)",
+      "Bash(git push:*)"
     ]
   }
 }

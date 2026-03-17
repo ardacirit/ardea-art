@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
-
-// ── Replace with real handles ──────────────────────────────────────────────────
-const WHATSAPP_NUMBER = '905XXXXXXXXX'   // international format, no +
-const INSTAGRAM_HANDLE = 'ardea.art'
-// ──────────────────────────────────────────────────────────────────────────────
+import { useSanityQuery } from '../hooks/useSanity'
+import { SITE_SETTINGS_QUERY } from '../lib/queries'
 
 export default function Footer() {
   const { lang } = useLang()
+  const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
   const year = new Date().getFullYear()
+
+  const whatsappNumber = settings?.whatsappNumber || ''
+  const instagramHandle = settings?.instagramHandle || ''
+  const tagline = tr(settings?.footerTagline, lang) || tr(t.footer.tagline, lang)
+  const quote = tr(settings?.footerQuote, lang) || (lang === 'tr' ? '"Yavaş sanat, derin iz bırakır."' : '"Slow art leaves a deep mark."')
 
   const navLinks = [
     { to: '/',           label: tr(t.nav.home, lang) },
@@ -30,7 +33,7 @@ export default function Footer() {
               El Yapımı · Handcrafted
             </p>
             <p className="text-sm leading-relaxed text-white/60">
-              {tr(t.footer.tagline, lang)}
+              {tagline}
             </p>
           </div>
 
@@ -58,24 +61,28 @@ export default function Footer() {
               {tr(t.footer.follow, lang)}
             </p>
             <div className="flex flex-col gap-4">
-              <a
-                href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-white/60 hover:text-ardea-cobalt-light transition-colors duration-200"
-              >
-                <InstagramIcon />
-                @{INSTAGRAM_HANDLE}
-              </a>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-white/60 hover:text-ardea-cobalt-light transition-colors duration-200"
-              >
-                <WhatsAppIcon />
-                WhatsApp
-              </a>
+              {instagramHandle && (
+                <a
+                  href={`https://instagram.com/${instagramHandle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-white/60 hover:text-ardea-cobalt-light transition-colors duration-200"
+                >
+                  <InstagramIcon />
+                  @{instagramHandle}
+                </a>
+              )}
+              {whatsappNumber && (
+                <a
+                  href={`https://wa.me/${whatsappNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-white/60 hover:text-ardea-cobalt-light transition-colors duration-200"
+                >
+                  <WhatsAppIcon />
+                  WhatsApp
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -86,7 +93,7 @@ export default function Footer() {
             © {year} Ardea Art. {tr(t.footer.rights, lang)}
           </p>
           <p className="text-xs text-white/20 italic font-serif">
-            "Yavaş sanat, derin iz bırakır."
+            {quote}
           </p>
         </div>
       </div>

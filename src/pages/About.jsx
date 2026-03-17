@@ -19,14 +19,24 @@ function ImgOrPlaceholder({ sanityImg, alt, className, label }) {
 
 export default function About() {
   const { lang } = useLang()
-  const techniques = tr(t.about.techniques, lang)
   const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
 
   const addPhoto = lang === 'tr' ? '📷 Site Ayarları\'ndan fotoğraf ekleyin' : '📷 Add photo from Site Settings'
 
+  // Metin alanları: Sanity'de varsa onu kullan, yoksa translations.js fallback
+  const p1 = tr(settings?.aboutP1, lang) || tr(t.about.p1, lang)
+  const p2 = tr(settings?.aboutP2, lang) || tr(t.about.p2, lang)
+  const p3 = tr(settings?.aboutP3, lang) || tr(t.about.p3, lang)
+  const atelierText = tr(settings?.aboutAtelierText, lang) || tr(t.about.atelierText, lang)
+
+  // Teknikler: Sanity'de liste varsa onu kullan, yoksa translations.js
+  const techniques = (Array.isArray(settings?.aboutTechniques) && settings.aboutTechniques.length > 0)
+    ? settings.aboutTechniques.map(item => tr(item, lang)).filter(Boolean)
+    : tr(t.about.techniques, lang)
+
   return (
     <main className="pt-28 pb-24">
-      {/* ── Hero block ────────────────────────────────────── */}
+      {/* Hero block */}
       <div className="bg-ardea-bej py-20 px-6 mb-20">
         <div className="max-w-3xl mx-auto text-center">
           <p className="section-label">{tr(t.about.label, lang)}</p>
@@ -36,14 +46,14 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── Story ─────────────────────────────────────────── */}
+      {/* Story */}
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start mb-24">
           <div className="lg:col-span-3 space-y-6 text-ardea-text-soft leading-relaxed text-lg">
-            <p>{tr(t.about.p1, lang)}</p>
+            <p>{p1}</p>
             <div className="w-12 h-px bg-ardea-cobalt" />
-            <p>{tr(t.about.p2, lang)}</p>
-            <p>{tr(t.about.p3, lang)}</p>
+            <p>{p2}</p>
+            <p>{p3}</p>
           </div>
 
           <div className="lg:col-span-2 relative">
@@ -57,7 +67,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* ── Studio + Techniques ────────────────────────── */}
+        {/* Studio + Techniques */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
           <div>
             <h2 className="font-serif text-2xl text-ardea-text mb-4">{tr(t.about.atelierTitle, lang)}</h2>
@@ -68,7 +78,7 @@ export default function About() {
               className="aspect-video mb-6"
               label={addPhoto}
             />
-            <p className="text-ardea-text-soft leading-relaxed">{tr(t.about.atelierText, lang)}</p>
+            <p className="text-ardea-text-soft leading-relaxed">{atelierText}</p>
           </div>
 
           <div>
@@ -95,7 +105,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* ── CTA strip ─────────────────────────────────── */}
+        {/* CTA strip */}
         <div className="bg-ardea-bej p-12 text-center">
           <h3 className="font-serif text-2xl text-ardea-text mb-4">
             {lang === 'tr' ? 'Birlikte Bir Şey Yaratalım' : "Let's Create Something Together"}

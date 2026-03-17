@@ -56,9 +56,17 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   whatsappNumber,
   instagramHandle,
   heroSlides,
-  aboutText,
+  heroTagline,
+  heroSubtitle,
   portraitImage,
   atelierImage,
   processImage,
-  homeTeaserImage
+  homeTeaserImage,
+  aboutP1,
+  aboutP2,
+  aboutP3,
+  aboutAtelierText,
+  aboutTechniques,
+  footerTagline,
+  footerQuote
 }`
