@@ -96,6 +96,13 @@ export const siteSettings = {
       group: 'contact',
       description: 'İletişim sayfasındaki açıklama metni.',
     },
+    {
+      name: 'customOrderText',
+      title: 'Özel Sipariş Açıklama Metni',
+      type: 'localizedText',
+      group: 'contact',
+      description: 'İletişim sayfasındaki "Özel Sipariş" kutusunun metni.',
+    },
 
     // ── Fotoğraflar ───────────────────────────────────────────
     {

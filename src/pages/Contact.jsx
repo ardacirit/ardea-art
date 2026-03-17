@@ -8,8 +8,13 @@ export default function Contact() {
   const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
 
   const whatsappNumber = settings?.whatsappNumber || '905XXXXXXXXX'
-  const instagramHandle = settings?.instagramHandle || 'ardea.art'
+  const instagramHandle = settings?.instagramHandle || ''
   const contactSubtitle = tr(settings?.contactSubtitle, lang) || tr(t.contact.subtitle, lang)
+  const customOrderText = tr(settings?.customOrderText, lang) || (
+    lang === 'tr'
+      ? 'Boyut, renk veya desen konusunda özelleştirilmiş eserler için WhatsApp\'tan yazabilirsiniz.'
+      : 'For personalised works in specific sizes, colours or patterns, reach out via WhatsApp.'
+  )
 
   const waMsg = lang === 'tr'
     ? 'Merhaba! Ardea Art hakkında bilgi almak istiyorum.'
@@ -93,9 +98,7 @@ export default function Contact() {
             {lang === 'tr' ? 'Özel Sipariş' : 'Custom Orders'}
           </p>
           <p className="text-ardea-text-soft text-sm leading-relaxed">
-            {lang === 'tr'
-              ? 'Boyut, renk veya desen konusunda özelleştirilmiş eserler için WhatsApp\'tan yazabilirsiniz. Her özel sipariş için kişisel danışma sunuyorum.'
-              : 'For personalised works in specific sizes, colours or patterns, reach out via WhatsApp. I offer a personal consultation for every custom order.'}
+            {customOrderText}
           </p>
         </div>
       </div>

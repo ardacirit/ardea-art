@@ -4,5 +4,6 @@ export default defineCliConfig({
   api: {
     projectId: process.env.SANITY_PROJECT_ID || 'uanm61w5',
     dataset: 'production'
-  }
+  },
+  studioHost: 'ardea-art'
 })
