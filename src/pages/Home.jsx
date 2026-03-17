@@ -170,7 +170,9 @@ function BlogTeaser({ post, lang }) {
         }
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-ardea-brown text-xs tracking-widest uppercase mb-1">{post.category}</p>
+        <p className="text-ardea-brown text-xs tracking-widest uppercase mb-1">
+          {typeof post.category === 'object' ? tr(post.category, lang) : post.category}
+        </p>
         <h3 className="font-serif text-lg text-ardea-text leading-snug mb-2 group-hover:text-ardea-cobalt transition-colors duration-200">
           {tr(post.title, lang)}
         </h3>
