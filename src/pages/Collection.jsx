@@ -3,21 +3,20 @@ import ArtworkCard from '../components/ArtworkCard'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
 import { useSanityQuery } from '../hooks/useSanity'
-import { ARTWORKS_QUERY } from '../lib/queries'
+import { ARTWORKS_QUERY, CATEGORIES_QUERY } from '../lib/queries'
 import { sanityImageUrl } from '../lib/sanity'
-
-// Sabit kategori sırası ve etiketleri — Sanity şemasıyla eşleşmeli
-const CATEGORY_ORDER = ['tile', 'botanical', 'natural-dye', 'ceramic']
 
 const SANITY_CONFIGURED =
   import.meta.env.VITE_SANITY_PROJECT_ID &&
   import.meta.env.VITE_SANITY_PROJECT_ID !== 'YOUR_PROJECT_ID'
 
-/** Normalise a Sanity artwork record into the shape ArtworkCard expects */
 function normalizeSanityArtwork(item) {
+  const catSlug = item.category?.slug?.current ?? item.category?._id ?? 'other'
   return {
     id: item._id,
-    category: item.category,
+    categorySlug: catSlug,
+    categoryTitle: item.category?.title ?? {},
+    categoryEmoji: item.category?.emoji ?? '',
     placeholder: sanityImageUrl(item.image, { width: 600, height: 600 }),
     title: item.title ?? {},
     desc: item.description ?? {},
@@ -35,6 +34,9 @@ export default function Collection() {
   const { data: sanityData, loading } = useSanityQuery(
     SANITY_CONFIGURED ? ARTWORKS_QUERY : null
   )
+  const { data: sanityCategories } = useSanityQuery(
+    SANITY_CONFIGURED ? CATEGORIES_QUERY : null
+  )
 
   const artworkList = useMemo(() => {
     if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData)) {
@@ -43,15 +45,23 @@ export default function Collection() {
     return []
   }, [sanityData, loading])
 
-  // Sadece içi dolu kategoriler — Sanity'deki eserlere göre otomatik
-  const activeCategories = useMemo(() => {
-    const usedCats = new Set(artworkList.map(a => a.category))
-    return CATEGORY_ORDER.filter(cat => usedCats.has(cat))
-  }, [artworkList])
+  // Sadece eseri olan kategoriler
+  const usedSlugs = useMemo(
+    () => new Set(artworkList.map(a => a.categorySlug)),
+    [artworkList]
+  )
 
-  const filtered = activeFilter === 'all'
-    ? artworkList
-    : artworkList.filter(a => a.category === activeFilter)
+  const visibleCategories = useMemo(() => {
+    if (!Array.isArray(sanityCategories)) return []
+    return sanityCategories.filter(cat => usedSlugs.has(cat.slug?.current))
+  }, [sanityCategories, usedSlugs])
+
+  const filtered = useMemo(() =>
+    activeFilter === 'all'
+      ? artworkList
+      : artworkList.filter(a => a.categorySlug === activeFilter),
+    [artworkList, activeFilter]
+  )
 
   return (
     <main className="pt-28 pb-24">
@@ -63,11 +73,10 @@ export default function Collection() {
         <p className="section-subtitle">{tr(t.collection.subtitle, lang)}</p>
       </div>
 
-      {/* Filter bar — sadece eser olan kategoriler görünür */}
-      {!loading && activeCategories.length > 1 && (
+      {/* Filter bar — sadece eseri olan kategoriler, Sanity'den */}
+      {!loading && visibleCategories.length > 1 && (
         <div className="max-w-7xl mx-auto px-6 mb-10">
           <div className="flex flex-wrap gap-2">
-            {/* Tümü butonu */}
             <button
               onClick={() => setActiveFilter('all')}
               className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200
@@ -78,18 +87,17 @@ export default function Collection() {
             >
               {tr(t.collection.filter.all, lang)}
             </button>
-            {/* Dolu kategoriler */}
-            {activeCategories.map(cat => (
+            {visibleCategories.map(cat => (
               <button
-                key={cat}
-                onClick={() => setActiveFilter(cat)}
+                key={cat._id}
+                onClick={() => setActiveFilter(cat.slug?.current)}
                 className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-200
-                  ${activeFilter === cat
+                  ${activeFilter === cat.slug?.current
                     ? 'bg-ardea-cobalt text-white'
                     : 'bg-ardea-bej text-ardea-text-soft hover:bg-ardea-gray hover:text-ardea-text'
                   }`}
               >
-                {tr(t.collection.filter[cat], lang)}
+                {cat.emoji ? `${cat.emoji} ` : ''}{tr(cat.title, lang)}
               </button>
             ))}
           </div>

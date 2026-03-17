@@ -12,7 +12,7 @@ export default defineConfig({
     structureTool({
       structure: (S) =>
         S.list()
-          .title('İçerik')
+          .title('Yönetim Paneli')
           .items([
             S.listItem()
               .title('⚙️ Site Ayarları')
@@ -25,6 +25,10 @@ export default defineConfig({
             S.listItem()
               .title('🖼️ Eserler')
               .child(S.documentTypeList('artwork').title('Eserler')),
+            S.listItem()
+              .title('📂 Kategoriler')
+              .child(S.documentTypeList('category').title('Kategoriler')),
+            S.divider(),
             S.listItem()
               .title('✍️ Blog Yazıları')
               .child(S.documentTypeList('blogPost').title('Blog Yazıları')),

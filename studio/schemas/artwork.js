@@ -12,16 +12,8 @@ export const artwork = {
     {
       name: 'category',
       title: 'Kategori',
-      type: 'string',
-      options: {
-        list: [
-          { title: '🔵 Çini', value: 'tile' },
-          { title: '🌿 Ekolojik Baskı', value: 'botanical' },
-          { title: '🎨 Doğal Boyama', value: 'natural-dye' },
-          { title: '🏺 Seramik Boyama', value: 'ceramic' },
-        ],
-        layout: 'radio',
-      },
+      type: 'reference',
+      to: [{ type: 'category' }],
       validation: (Rule) => Rule.required(),
     },
     {
@@ -70,15 +62,14 @@ export const artwork = {
   preview: {
     select: {
       title: 'title.tr',
-      category: 'category',
       media: 'image',
       sold: 'sold',
+      catTitle: 'category.title.tr',
     },
-    prepare({ title, category, media, sold }) {
-      const cats = { tile: '🔵', botanical: '🌿', 'natural-dye': '🎨', ceramic: '🏺' }
+    prepare({ title, media, sold, catTitle }) {
       return {
-        title: `${cats[category] || ''} ${title || 'İsimsiz Eser'}`,
-        subtitle: sold ? '✅ Satıldı' : 'Satışta',
+        title: title || 'İsimsiz Eser',
+        subtitle: `${catTitle || 'Kategori yok'} ${sold ? '· ✅ Satıldı' : ''}`,
         media,
       }
     },

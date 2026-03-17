@@ -22,7 +22,7 @@ export default function ArtworkCard({ artwork, showShopier = true }) {
         )}
         {/* Category pill */}
         <div className="absolute top-3 right-3 bg-white/90 text-ardea-text-soft text-[10px] tracking-widest uppercase px-2 py-1">
-          {tr(t.collection.filter[artwork.category], lang)}
+          {artwork.categoryEmoji ? `${artwork.categoryEmoji} ` : ''}{tr(artwork.categoryTitle, lang)}
         </div>
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-ardea-cobalt/0 group-hover:bg-ardea-cobalt/10 transition-all duration-500" />
