@@ -4,6 +4,7 @@ export const siteSettings = {
   type: 'document',
   __experimental_actions: ['update', 'publish'],
   groups: [
+    { name: 'general',  title: '🌐 Genel' },
     { name: 'contact',  title: '📞 İletişim' },
     { name: 'hero',     title: '🏠 Ana Sayfa Hero' },
     { name: 'home',     title: '🏡 Ana Sayfa Metinleri' },
@@ -12,6 +13,21 @@ export const siteSettings = {
     { name: 'footer',   title: '🔻 Footer' },
   ],
   fields: [
+    // ── Genel ─────────────────────────────────────────────────
+    {
+      name: 'favicon',
+      title: 'Site İkonu (Favicon)',
+      type: 'image',
+      group: 'general',
+      description: 'Tarayıcı sekmesinde görünen küçük ikon. Kare olmalı, önerilen boyut: 512×512 px. PNG veya ICO.',
+    },
+    {
+      name: 'siteTitle',
+      title: 'Site Başlığı',
+      type: 'string',
+      group: 'general',
+      description: 'Tarayıcı sekmesinde ve Google\'da görünen başlık. Örnek: "Ardea Art — El Yapımı Çini Sanatı"',
+    },
     // ── İletişim ──────────────────────────────────────────────
     {
       name: 'whatsappNumber',

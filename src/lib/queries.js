@@ -53,6 +53,8 @@ export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current ==
 }`
 
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
+  favicon,
+  siteTitle,
   whatsappNumber,
   instagramHandle,
   heroSlides,
