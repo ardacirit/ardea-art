@@ -32,10 +32,10 @@ export default function Blog() {
   )
 
   const posts = (() => {
-    if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData) && sanityData.length > 0) {
+    if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData)) {
       return sanityData.map(normalizeSanityPost)
     }
-    return staticBlogPosts
+    return []
   })()
 
   return (
@@ -63,15 +63,30 @@ export default function Blog() {
 
         {!loading && (
           <>
-            {/* Featured post (first) */}
-            {posts[0] && <FeaturedPost post={posts[0]} lang={lang} />}
+            {posts.length === 0 ? (
+              <div className="py-32 text-center">
+                <p className="font-serif text-2xl text-ardea-text-soft mb-3">
+                  {lang === 'tr' ? 'Henüz yazı yayınlanmadı.' : 'No posts published yet.'}
+                </p>
+                <p className="text-ardea-text-muted text-sm">
+                  {lang === 'tr'
+                    ? 'Blog yazıları yakında burada olacak.'
+                    : 'Blog posts will appear here soon.'}
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Featured post (first) */}
+                {posts[0] && <FeaturedPost post={posts[0]} lang={lang} />}
 
-            {/* Post list */}
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.slice(1).map(post => (
-                <PostCard key={post.id} post={post} lang={lang} />
-              ))}
-            </div>
+                {/* Post list */}
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {posts.slice(1).map(post => (
+                    <PostCard key={post.id} post={post} lang={lang} />
+                  ))}
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

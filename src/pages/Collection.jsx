@@ -35,10 +35,10 @@ export default function Collection() {
   )
 
   const artworkList = (() => {
-    if (SANITY_CONFIGURED && !loading && !error && Array.isArray(sanityData) && sanityData.length > 0) {
+    if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData)) {
       return sanityData.map(normalizeSanityArtwork)
     }
-    return staticArtworks
+    return []
   })()
 
   const filtered = activeFilter === 'all'
@@ -89,8 +89,15 @@ export default function Collection() {
       {!loading && (
         <div className="max-w-7xl mx-auto px-6">
           {filtered.length === 0 ? (
-            <div className="py-24 text-center text-ardea-text-muted font-serif text-lg">
-              {lang === 'tr' ? 'Bu kategoride henüz eser yok.' : 'No works in this category yet.'}
+            <div className="py-32 text-center">
+              <p className="font-serif text-2xl text-ardea-text-soft mb-3">
+                {lang === 'tr' ? 'Henüz eser eklenmedi.' : 'No works added yet.'}
+              </p>
+              <p className="text-ardea-text-muted text-sm">
+                {lang === 'tr'
+                  ? 'Eserler yakında burada olacak.'
+                  : 'Works will appear here soon.'}
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
