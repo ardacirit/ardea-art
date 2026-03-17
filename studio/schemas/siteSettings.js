@@ -16,10 +16,12 @@ export const siteSettings = {
       type: 'string',
       description: '@ işareti olmadan. Örnek: ardea.art',
     },
+    // ── Hero Slider ──────────────────────────────────────────
     {
       name: 'heroSlides',
-      title: 'Ana Sayfa Slaytları',
+      title: '🖼️ Ana Sayfa Slaytları',
       type: 'array',
+      description: 'En az 1, en fazla 5 slayt ekleyin.',
       of: [
         {
           type: 'object',
@@ -37,6 +39,36 @@ export const siteSettings = {
         },
       ],
     },
+    // ── Hakkımda Sayfası Fotoğrafları ───────────────────────
+    {
+      name: 'portraitImage',
+      title: '🧑‍🎨 Sanatçı Fotoğrafı (Hakkımda)',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Hakkımda sayfasında görünen portre fotoğrafı.',
+    },
+    {
+      name: 'atelierImage',
+      title: '🏠 Atölye Fotoğrafı',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Çalışma alanınızın fotoğrafı.',
+    },
+    {
+      name: 'processImage',
+      title: '🎨 Üretim Süreci Fotoğrafı',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Eser yapım sürecini gösteren fotoğraf.',
+    },
+    {
+      name: 'homeTeaserImage',
+      title: '🏠 Ana Sayfa — Hakkımda Görseli',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Ana sayfadaki "Hakkımda" önizleme bölümünde görünen fotoğraf.',
+    },
+    // ── Hakkımda Metinleri ───────────────────────────────────
     {
       name: 'aboutText',
       title: 'Hakkımda — Ana Paragraf',

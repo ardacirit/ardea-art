@@ -1,10 +1,28 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
+import { useSanityQuery } from '../hooks/useSanity'
+import { SITE_SETTINGS_QUERY } from '../lib/queries'
+import { sanityImageUrl } from '../lib/sanity'
+
+function ImgOrPlaceholder({ sanityImg, alt, className, label }) {
+  const url = sanityImg ? sanityImageUrl(sanityImg, { width: 800, height: 900 }) : null
+  return (
+    <div className={`overflow-hidden bg-ardea-gray ${className}`}>
+      {url
+        ? <img src={url} alt={alt} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
+        : <div className="w-full h-full flex items-center justify-center text-ardea-text-muted text-sm p-4 text-center">{label}</div>
+      }
+    </div>
+  )
+}
 
 export default function About() {
   const { lang } = useLang()
   const techniques = tr(t.about.techniques, lang)
+  const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
+
+  const addPhoto = lang === 'tr' ? '📷 Site Ayarları\'ndan fotoğraf ekleyin' : '📷 Add photo from Site Settings'
 
   return (
     <main className="pt-28 pb-24">
@@ -21,7 +39,6 @@ export default function About() {
       {/* ── Story ─────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start mb-24">
-          {/* Text */}
           <div className="lg:col-span-3 space-y-6 text-ardea-text-soft leading-relaxed text-lg">
             <p>{tr(t.about.p1, lang)}</p>
             <div className="w-12 h-px bg-ardea-cobalt" />
@@ -29,46 +46,33 @@ export default function About() {
             <p>{tr(t.about.p3, lang)}</p>
           </div>
 
-          {/* Portrait + decoration */}
           <div className="lg:col-span-2 relative">
-            <div className="aspect-[3/4] overflow-hidden bg-ardea-gray">
-              <img
-                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=700&q=80"
-                alt="Sanatçı"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            <ImgOrPlaceholder
+              sanityImg={settings?.portraitImage}
+              alt="Sanatçı"
+              className="aspect-[3/4]"
+              label={addPhoto}
+            />
             <div className="absolute -top-4 -left-4 w-24 h-24 border-2 border-ardea-cobalt/20 -z-10" />
           </div>
         </div>
 
         {/* ── Studio + Techniques ────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
-          {/* Atelier */}
           <div>
-            <h2 className="font-serif text-2xl text-ardea-text mb-4">
-              {tr(t.about.atelierTitle, lang)}
-            </h2>
+            <h2 className="font-serif text-2xl text-ardea-text mb-4">{tr(t.about.atelierTitle, lang)}</h2>
             <div className="w-8 h-px bg-ardea-brown mb-6" />
-            <div className="aspect-video overflow-hidden bg-ardea-gray mb-6">
-              <img
-                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
-                alt="Atölye"
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-            <p className="text-ardea-text-soft leading-relaxed">
-              {tr(t.about.atelierText, lang)}
-            </p>
+            <ImgOrPlaceholder
+              sanityImg={settings?.atelierImage}
+              alt="Atölye"
+              className="aspect-video mb-6"
+              label={addPhoto}
+            />
+            <p className="text-ardea-text-soft leading-relaxed">{tr(t.about.atelierText, lang)}</p>
           </div>
 
-          {/* Techniques */}
           <div>
-            <h2 className="font-serif text-2xl text-ardea-text mb-4">
-              {tr(t.about.techniqueTitle, lang)}
-            </h2>
+            <h2 className="font-serif text-2xl text-ardea-text mb-4">{tr(t.about.techniqueTitle, lang)}</h2>
             <div className="w-8 h-px bg-ardea-brown mb-6" />
             <ul className="space-y-4">
               {techniques.map((tech, i) => (
@@ -80,14 +84,12 @@ export default function About() {
                 </li>
               ))}
             </ul>
-
-            {/* Process image */}
-            <div className="mt-8 aspect-video overflow-hidden bg-ardea-gray">
-              <img
-                src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80"
+            <div className="mt-8">
+              <ImgOrPlaceholder
+                sanityImg={settings?.processImage}
                 alt="Üretim süreci"
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                loading="lazy"
+                className="aspect-video"
+                label={addPhoto}
               />
             </div>
           </div>
