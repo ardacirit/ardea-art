@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ardea-white text-ardea-text font-sans antialiased;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  /* ─── Buttons ──────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-ardea-cobalt text-white text-sm font-medium tracking-wide
+           transition-all duration-300 hover:bg-ardea-cobalt-light hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-ardea-cobalt text-ardea-cobalt text-sm font-medium tracking-wide
+           transition-all duration-300 hover:bg-ardea-cobalt hover:text-white;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-ardea-text-soft text-sm font-medium tracking-wide
+           transition-colors duration-200 hover:text-ardea-cobalt;
+  }
+
+  /* ─── Section titles ───────────────────────── */
+  .section-label {
+    @apply text-xs font-medium tracking-widest uppercase text-ardea-brown mb-3;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif font-medium text-ardea-text leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-ardea-text-soft font-light leading-relaxed mt-4 max-w-xl;
+  }
+
+  /* ─── Cards ────────────────────────────────── */
+  .artwork-card {
+    @apply overflow-hidden bg-white cursor-pointer;
+  }
+
+  .artwork-card-img {
+    @apply w-full aspect-square object-cover transition-transform duration-700;
+  }
+
+  /* ─── Divider ──────────────────────────────── */
+  .divider {
+    @apply w-12 h-px bg-ardea-brown my-6;
+  }
+
+  /* ─── Nav link ─────────────────────────────── */
+  .nav-link {
+    @apply relative text-sm font-medium text-ardea-text-soft tracking-wide transition-colors duration-200 hover:text-ardea-cobalt
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-ardea-cobalt
+           after:transition-all after:duration-300 hover:after:w-full;
+  }
+
+  .nav-link-active {
+    @apply text-ardea-cobalt after:w-full;
+  }
+}
+
+/* ─── Scroll progress indicator ────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: #0047AB;
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ─── Hero slider fade ──────────────────────── */
+.slide-fade-enter {
+  opacity: 0;
+  transform: scale(1.03);
+}
+.slide-fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.slide-fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.slide-fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* ─── Custom scrollbar ──────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F0E8;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4BDB5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0047AB;
+}
+
+/* ─── Blog article prose ────────────────────── */
+.prose-ardea h1,
+.prose-ardea h2 {
+  @apply font-serif text-ardea-text;
+}
+.prose-ardea p {
+  @apply text-ardea-text-soft leading-relaxed;
+}
+.prose-ardea li {
+  @apply text-ardea-text-soft;
+}
+.prose-ardea strong {
+  @apply font-semibold text-ardea-text;
+}
+
+/* ─── WhatsApp float button ─────────────────── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}

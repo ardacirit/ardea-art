@@ -1,0 +1,163 @@
+/**
+ * collections.js
+ * Static data for artwork cards. In a CMS-connected version, replace this
+ * with an API call (e.g., Contentful, Sanity, or a custom REST endpoint).
+ *
+ * Image paths point to /public/images/collection/ — add your JPEGs there.
+ * Shopier URLs: replace '#' with actual product URLs.
+ */
+
+export const artworks = [
+  // ─── Tile Art ────────────────────────────────────────────────────────────────
+  {
+    id: 'cini-01',
+    category: 'tile',
+    image: '/images/collection/cini-01.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&q=80',
+    title:     { tr: 'Lacivert Madalyon',       en: 'Cobalt Medallion' },
+    desc:      { tr: 'Geleneksel İznik desen tekniği ile elle çizilmiş kobalt çini tabak. Çap: 28 cm.',
+                 en: 'Hand-drawn cobalt tile plate using traditional İznik pattern technique. Ø 28 cm.' },
+    price:     '₺1.800',
+    shopierUrl: '#',
+    featured:  true,
+    sold:      false,
+  },
+  {
+    id: 'cini-02',
+    category: 'tile',
+    image: '/images/collection/cini-02.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1614965928756-7e4bc80a8a36?w=600&q=80',
+    title:     { tr: 'Lale Serisi No.3',        en: 'Tulip Series No.3' },
+    desc:      { tr: 'Osmanlı lale motifi ilhamlı, altın ve kobalt detaylı karo set (4\'lü).',
+                 en: 'Ottoman tulip-inspired decorative tile set (set of 4) with gold and cobalt details.' },
+    price:     '₺2.400',
+    shopierUrl: '#',
+    featured:  true,
+    sold:      false,
+  },
+  {
+    id: 'cini-03',
+    category: 'tile',
+    image: '/images/collection/cini-03.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600&q=80',
+    title:     { tr: 'Rumi Vazo',               en: 'Rumi Vase' },
+    desc:      { tr: 'Rumi motifli, boyutu 30 cm olan el yapımı seramik vazo. Sır üstü boya.',
+                 en: 'Hand-painted ceramic vase (30 cm) with Rumi ornament motifs. Overglaze technique.' },
+    price:     '₺3.200',
+    shopierUrl: '#',
+    featured:  true,
+    sold:      false,
+  },
+  {
+    id: 'cini-04',
+    category: 'tile',
+    image: '/images/collection/cini-04.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1569173112611-52a7cd38bea9?w=600&q=80',
+    title:     { tr: 'Sonsuzluk Tabağı',        en: 'Infinity Plate' },
+    desc:      { tr: 'Sonsuzluk deseni üzerine kobalt ve turkuaz tonlu çini tabak. Duvar dekorasyonu için.',
+                 en: 'Infinity-pattern tile plate in cobalt and turquoise tones. Suitable for wall display.' },
+    price:     '₺2.100',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      true,
+  },
+
+  // ─── Botanical / Eco Print ───────────────────────────────────────────────────
+  {
+    id: 'eco-01',
+    category: 'botanical',
+    image: '/images/collection/eco-01.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=600&q=80',
+    title:     { tr: 'Meşe Baskı — Sonbahar', en: 'Oak Print — Autumn' },
+    desc:      { tr: 'Meşe yaprağı ile ekolojik buhar baskısı tekniği. Doğal demir mordanlı keten kumaş. 40×55 cm.',
+                 en: 'Botanical steam print with oak leaves on natural linen, iron mordant. 40×55 cm.' },
+    price:     '₺950',
+    shopierUrl: '#',
+    featured:  true,
+    sold:      false,
+  },
+  {
+    id: 'eco-02',
+    category: 'botanical',
+    image: '/images/collection/eco-02.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1504198458649-3128b932f49e?w=600&q=80',
+    title:     { tr: 'Gül & Isırgan',         en: 'Rose & Nettle' },
+    desc:      { tr: 'Gülyağı ve ısırgan otu ile ekolojik baskı. Organik pamuk. 30×40 cm.',
+                 en: 'Eco print with rosehip and nettle on organic cotton. 30×40 cm.' },
+    price:     '₺780',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      false,
+  },
+  {
+    id: 'eco-03',
+    category: 'botanical',
+    image: '/images/collection/eco-03.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80',
+    title:     { tr: 'Eğreltiotu Serisi',      en: 'Fern Series' },
+    desc:      { tr: 'Eğreltiotu yaprakları ile ekolojik baskı, çift katmanlı ipek-pamuk karışımı.',
+                 en: 'Botanical print with fern fronds on double-layered silk-cotton blend.' },
+    price:     '₺1.200',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      false,
+  },
+
+  // ─── Natural Dye ─────────────────────────────────────────────────────────────
+  {
+    id: 'nat-01',
+    category: 'natural',
+    image: '/images/collection/nat-01.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+    title:     { tr: 'Çivit Mavi İpek Fular',  en: 'Indigo Silk Foulard' },
+    desc:      { tr: 'Geleneksel çivit (indigo) boyama tekniğiyle boyanmış saf ipek fular. 90×90 cm.',
+                 en: 'Pure silk foulard dyed with traditional indigo fermentation vat. 90×90 cm.' },
+    price:     '₺1.650',
+    shopierUrl: '#',
+    featured:  true,
+    sold:      false,
+  },
+  {
+    id: 'nat-02',
+    category: 'natural',
+    image: '/images/collection/nat-02.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=600&q=80',
+    title:     { tr: 'Ceviz Kabuğu Kumaş',     en: 'Walnut Shell Cloth' },
+    desc:      { tr: 'Ceviz kabuğu kaynatmasıyla elde edilen zengin kahve tonlarında keten bez. 50×70 cm.',
+                 en: 'Linen cloth dyed in rich brown tones with walnut shell decoction. 50×70 cm.' },
+    price:     '₺680',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      false,
+  },
+
+  // ─── Ceramic Painting ────────────────────────────────────────────────────────
+  {
+    id: 'cer-01',
+    category: 'ceramic',
+    image: '/images/collection/cer-01.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80',
+    title:     { tr: 'Yaban Çiçekleri Sürahi', en: 'Wildflower Jug' },
+    desc:      { tr: 'Anadolu yaban çiçekleri ilhamıyla elle boyanmış seramik sürahi. Fırın güvenli.',
+                 en: 'Hand-painted ceramic jug inspired by Anatolian wildflowers. Oven safe.' },
+    price:     '₺1.100',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      false,
+  },
+  {
+    id: 'cer-02',
+    category: 'ceramic',
+    image: '/images/collection/cer-02.jpg',
+    placeholder: 'https://images.unsplash.com/photo-1511376979163-f804dff7ad7b?w=600&q=80',
+    title:     { tr: 'Baykuş Mumluk',          en: 'Owl Candleholder' },
+    desc:      { tr: 'Soyut geometrik baykuş deseniyle boyalı el yapımı seramik mumluk.',
+                 en: 'Handcrafted ceramic candleholder with abstract geometric owl motif.' },
+    price:     '₺890',
+    shopierUrl: '#',
+    featured:  false,
+    sold:      false,
+  },
+]
+
+export const categories = ['all', 'tile', 'botanical', 'natural', 'ceramic']
