@@ -2,18 +2,16 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
-import { useSanityQuery } from '../hooks/useSanity'
-import { SITE_SETTINGS_QUERY } from '../lib/queries'
 import { sanityImageUrl } from '../lib/sanity'
 
 const FALLBACK_SLIDE = { image: null, tagline: null, subtitle: null }
 
-export default function Hero() {
+// settings prop'u Home'dan gelir (zaten orada fetch ediliyor, tekrar fetch etmeyelim)
+export default function Hero({ settings }) {
   const { lang } = useLang()
   const [current, setCurrent] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
 
-  const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
   const slides = (settings?.heroSlides?.length > 0) ? settings.heroSlides : [FALLBACK_SLIDE]
 
   const go = useCallback((idx) => {
@@ -32,6 +30,14 @@ export default function Hero() {
   const slide = slides[Math.min(current, slides.length - 1)]
   const imgUrl = slide?.image ? sanityImageUrl(slide.image, { width: 1600, height: 900 }) : null
 
+  // Başlık önceliği: slayt başlığı > siteSettings global başlık > translations fallback
+  const tagline = tr(slide?.tagline, lang)
+    || tr(settings?.heroTagline, lang)
+    || tr(t.hero.tagline, lang)
+  const subtitle = tr(slide?.subtitle, lang)
+    || tr(settings?.heroSubtitle, lang)
+    || tr(t.hero.sub, lang)
+
   return (
     <section className="relative h-screen min-h-[640px] overflow-hidden bg-ardea-text">
       <div className={`absolute inset-0 transition-opacity duration-700 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
@@ -46,11 +52,11 @@ export default function Hero() {
         <div className={`max-w-xl transition-all duration-700 ${transitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
           <p className="text-white/70 text-xs tracking-[0.25em] uppercase mb-6">Ardea Art</p>
           <h1 className="font-serif text-4xl md:text-6xl text-white leading-tight whitespace-pre-line mb-6 drop-shadow-sm">
-            {slide?.tagline ? tr(slide.tagline, lang) : tr(t.hero.tagline, lang)}
+            {tagline}
           </h1>
           <div className="w-12 h-px bg-white/60 mb-6" />
           <p className="text-white/80 text-base md:text-lg font-light leading-relaxed mb-10">
-            {slide?.subtitle ? tr(slide.subtitle, lang) : tr(t.hero.sub, lang)}
+            {subtitle}
           </p>
           <div className="flex flex-wrap gap-4">
             <Link to="/collection" className="btn-primary">

@@ -9,6 +9,7 @@ export default function Contact() {
 
   const whatsappNumber = settings?.whatsappNumber || '905XXXXXXXXX'
   const instagramHandle = settings?.instagramHandle || 'ardea.art'
+  const contactSubtitle = tr(settings?.contactSubtitle, lang) || tr(t.contact.subtitle, lang)
 
   const waMsg = lang === 'tr'
     ? 'Merhaba! Ardea Art hakkında bilgi almak istiyorum.'
@@ -24,7 +25,7 @@ export default function Contact() {
             {tr(t.contact.title, lang)}
           </h1>
           <p className="section-subtitle mx-auto text-center mt-4 max-w-xl">
-            {tr(t.contact.subtitle, lang)}
+            {contactSubtitle}
           </p>
         </div>
       </div>

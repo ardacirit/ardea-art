@@ -45,11 +45,22 @@ export default function Home() {
   const teaserImgUrl = settings?.homeTeaserImage
     ? sanityImageUrl(settings.homeTeaserImage, { width: 800, height: 1000 })
     : null
-  const instagramHandle = settings?.instagramHandle || 'ardea.art'
+  const instagramHandle = settings?.instagramHandle || ''
+
+  // Sanity'den gelen metinler, yoksa translations.js fallback
+  const philosophyQuote = tr(settings?.philosophyQuote, lang) || (
+    lang === 'tr'
+      ? '"Her eser bir sabahın ürünüdür — aceleyle değil, dinginlikle doğar."'
+      : '"Every piece is the fruit of a morning — born not in haste, but in stillness."'
+  )
+  const featuredTitle = tr(settings?.featuredTitle, lang) || tr(t.featured.title, lang)
+  const featuredSubtitle = tr(settings?.featuredSubtitle, lang) || tr(t.featured.subtitle, lang)
+  const aboutP1 = tr(settings?.aboutP1, lang) || tr(t.about.p1, lang)
+  const aboutP2 = tr(settings?.aboutP2, lang) || tr(t.about.p2, lang)
 
   return (
     <>
-      <Hero />
+      <Hero settings={settings} />
 
       {/* ── Featured Works ─────────────────────────────────── */}
       {featured.length > 0 && (
@@ -57,9 +68,9 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-6">
             <div>
               <p className="section-label">{tr(t.featured.label, lang)}</p>
-              <h2 className="section-title">{tr(t.featured.title, lang)}</h2>
+              <h2 className="section-title">{featuredTitle}</h2>
               <div className="divider" />
-              <p className="section-subtitle">{tr(t.featured.subtitle, lang)}</p>
+              <p className="section-subtitle">{featuredSubtitle}</p>
             </div>
             <Link to="/collection" className="btn-outline shrink-0">
               {tr(t.featured.viewAll, lang)}
@@ -76,9 +87,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center">
           <div className="w-1 h-16 bg-ardea-cobalt mx-auto mb-8" />
           <blockquote className="font-serif text-2xl md:text-3xl text-ardea-text leading-relaxed italic mb-6">
-            {lang === 'tr'
-              ? '"Her eser bir sabahın ürünüdür — aceleyle değil, dinginlikle doğar."'
-              : '"Every piece is the fruit of a morning — born not in haste, but in stillness."'}
+            {philosophyQuote}
           </blockquote>
           <p className="text-ardea-brown text-sm tracking-widest uppercase">Ardea Art</p>
         </div>
@@ -91,7 +100,7 @@ export default function Home() {
             <div className="aspect-[4/5] overflow-hidden bg-ardea-gray">
               {teaserImgUrl
                 ? <img src={teaserImgUrl} alt="Atölye" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
-                : <div className="w-full h-full flex items-center justify-center text-ardea-text-muted text-sm">{lang === 'tr' ? 'Fotoğraf ekleyin →' : 'Add a photo →'}</div>
+                : <div className="w-full h-full flex items-center justify-center text-ardea-text-muted text-sm">{lang === 'tr' ? '📷 Site Ayarları\'ndan fotoğraf ekleyin' : '📷 Add a photo from Site Settings'}</div>
               }
             </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 border-2 border-ardea-cobalt/20 -z-10" />
@@ -100,8 +109,8 @@ export default function Home() {
             <p className="section-label">{tr(t.about.label, lang)}</p>
             <h2 className="section-title">{tr(t.about.title, lang)}</h2>
             <div className="divider" />
-            <p className="text-ardea-text-soft leading-relaxed mb-4">{tr(t.about.p1, lang)}</p>
-            <p className="text-ardea-text-soft leading-relaxed mb-8">{tr(t.about.p2, lang)}</p>
+            <p className="text-ardea-text-soft leading-relaxed mb-4">{aboutP1}</p>
+            <p className="text-ardea-text-soft leading-relaxed mb-8">{aboutP2}</p>
             <Link to="/about" className="btn-outline">
               {lang === 'tr' ? 'Hikâyemi Oku' : 'Read My Story'}
             </Link>
@@ -128,23 +137,25 @@ export default function Home() {
       )}
 
       {/* ── Instagram CTA ──────────────────────────────────── */}
-      <section className="bg-ardea-cobalt py-16 px-6 text-center">
-        <p className="text-white/60 text-xs tracking-widest uppercase mb-3">
-          {lang === 'tr' ? 'Bizi takip edin' : 'Follow us'}
-        </p>
-        <h2 className="font-serif text-3xl text-white mb-6">@{instagramHandle}</h2>
-        <a
-          href={`https://instagram.com/${instagramHandle}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 border border-white/60 text-white text-sm font-medium tracking-wide transition-all duration-300 hover:bg-white hover:text-ardea-cobalt"
-        >
-          Instagram
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
-      </section>
+      {instagramHandle && (
+        <section className="bg-ardea-cobalt py-16 px-6 text-center">
+          <p className="text-white/60 text-xs tracking-widest uppercase mb-3">
+            {lang === 'tr' ? 'Bizi takip edin' : 'Follow us'}
+          </p>
+          <h2 className="font-serif text-3xl text-white mb-6">@{instagramHandle}</h2>
+          <a
+            href={`https://instagram.com/${instagramHandle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-white/60 text-white text-sm font-medium tracking-wide transition-all duration-300 hover:bg-white hover:text-ardea-cobalt"
+          >
+            Instagram
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </section>
+      )}
     </>
   )
 }

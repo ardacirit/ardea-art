@@ -6,6 +6,7 @@ export const siteSettings = {
   groups: [
     { name: 'contact',  title: '📞 İletişim' },
     { name: 'hero',     title: '🏠 Ana Sayfa Hero' },
+    { name: 'home',     title: '🏡 Ana Sayfa Metinleri' },
     { name: 'photos',   title: '📷 Fotoğraflar' },
     { name: 'about',    title: '👩‍🎨 Hakkımda Metinleri' },
     { name: 'footer',   title: '🔻 Footer' },
@@ -64,6 +65,36 @@ export const siteSettings = {
       type: 'localizedString',
       group: 'hero',
       description: 'Slaytlarda alt başlık belirtilmezse bu metin gösterilir.',
+    },
+
+    // ── Ana Sayfa Metinleri ───────────────────────────────────
+    {
+      name: 'philosophyQuote',
+      title: 'Ana Sayfa Alıntısı',
+      type: 'localizedString',
+      group: 'home',
+      description: 'Hero\'nun altındaki büyük italik alıntı.',
+    },
+    {
+      name: 'featuredTitle',
+      title: 'Öne Çıkan Eserler — Başlık',
+      type: 'localizedString',
+      group: 'home',
+      description: 'Anasayfadaki eserler bölümünün başlığı.',
+    },
+    {
+      name: 'featuredSubtitle',
+      title: 'Öne Çıkan Eserler — Açıklama',
+      type: 'localizedText',
+      group: 'home',
+      description: 'Anasayfadaki eserler bölümünün altındaki açıklama metni.',
+    },
+    {
+      name: 'contactSubtitle',
+      title: 'İletişim Sayfası — Alt Başlık',
+      type: 'localizedText',
+      group: 'contact',
+      description: 'İletişim sayfasındaki açıklama metni.',
     },
 
     // ── Fotoğraflar ───────────────────────────────────────────
