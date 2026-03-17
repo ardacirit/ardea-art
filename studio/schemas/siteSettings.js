@@ -34,7 +34,7 @@ export const siteSettings = {
       title: '🖼️ Ana Sayfa Slaytları',
       type: 'array',
       group: 'hero',
-      description: 'En az 1, en fazla 5 slayt ekleyin.',
+      description: 'En az 1, en fazla 5 slayt ekleyin. Her slayt için fotoğraf önerilen boyut: 1600×900 px (16:9 yatay). JPG tercih edilir.',
       of: [
         {
           type: 'object',
@@ -111,7 +111,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Hakkımda sayfasında görünen portre fotoğrafı.',
+      description: 'Hakkımda sayfası sağ kolon — dikey fotoğraf önerilir. Önerilen boyut: 800×1000 px (4:5 oran). JPG veya PNG.',
     },
     {
       name: 'atelierImage',
@@ -119,6 +119,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
+      description: 'Hakkımda sayfası atölye bölümü — yatay fotoğraf önerilir. Önerilen boyut: 1200×675 px (16:9 oran). JPG veya PNG.',
     },
     {
       name: 'processImage',
@@ -126,6 +127,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
+      description: 'Hakkımda sayfası teknikler bölümü — yatay fotoğraf önerilir. Önerilen boyut: 1200×675 px (16:9 oran). JPG veya PNG.',
     },
     {
       name: 'homeTeaserImage',
@@ -133,7 +135,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Ana sayfadaki "Hakkımda" önizleme bölümünde görünen fotoğraf.',
+      description: 'Ana sayfadaki "Hakkımda" önizleme bölümü — dikey fotoğraf önerilir. Önerilen boyut: 800×1000 px (4:5 oran). JPG veya PNG.',
     },
 
     // ── Hakkımda Metinleri ────────────────────────────────────

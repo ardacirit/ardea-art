@@ -43,7 +43,7 @@ export default function Hero({ settings }) {
       <div className={`absolute inset-0 transition-opacity duration-700 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
         {imgUrl
           ? <img src={imgUrl} alt="" className="w-full h-full object-cover scale-105" loading="eager" />
-          : <div className="w-full h-full bg-gradient-to-br from-ardea-text via-ardea-cobalt/40 to-ardea-brown/60" />
+          : <div className="w-full h-full bg-gradient-to-br from-[#3d1a1a] via-[#8B6F47]/60 to-[#c9956b]/40" />
         }
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
       </div>

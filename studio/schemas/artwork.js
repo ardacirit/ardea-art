@@ -21,6 +21,7 @@ export const artwork = {
       title: 'Fotoğraf',
       type: 'image',
       options: { hotspot: true },
+      description: 'Önerilen boyut: 1200×1200 px (1:1 kare) veya 1200×900 px (4:3). JPG tercih edilir, min. 800 px.',
       validation: (Rule) => Rule.required(),
     },
     {
