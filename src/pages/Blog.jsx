@@ -1,10 +1,42 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
-import { blogPosts } from '../data/blogPosts'
+import { blogPosts as staticBlogPosts } from '../data/blogPosts'
+import { useSanityQuery } from '../hooks/useSanity'
+import { BLOG_POSTS_QUERY } from '../lib/queries'
+import { sanityImageUrl } from '../lib/sanity'
+
+const SANITY_CONFIGURED =
+  import.meta.env.VITE_SANITY_PROJECT_ID &&
+  import.meta.env.VITE_SANITY_PROJECT_ID !== 'YOUR_PROJECT_ID'
+
+/** Normalise a Sanity blog post into the shape the components expect */
+function normalizeSanityPost(item) {
+  return {
+    id: item._id,
+    slug: item.slug?.current ?? '',
+    category: item.category ?? '',
+    date: item.publishedAt ?? '',
+    readingTime: item.readingTime ?? 5,
+    placeholder: sanityImageUrl(item.coverImage, { width: 800, height: 600 }),
+    title: item.title ?? {},
+    excerpt: item.excerpt ?? {},
+  }
+}
 
 export default function Blog() {
   const { lang } = useLang()
+
+  const { data: sanityData, loading } = useSanityQuery(
+    SANITY_CONFIGURED ? BLOG_POSTS_QUERY : null
+  )
+
+  const posts = (() => {
+    if (SANITY_CONFIGURED && !loading && Array.isArray(sanityData) && sanityData.length > 0) {
+      return sanityData.map(normalizeSanityPost)
+    }
+    return staticBlogPosts
+  })()
 
   return (
     <main className="pt-28 pb-24">
@@ -17,21 +49,41 @@ export default function Blog() {
           <p className="section-subtitle">{tr(t.blog.subtitle, lang)}</p>
         </div>
 
-        {/* Featured post (first) */}
-        {blogPosts[0] && <FeaturedPost post={blogPosts[0]} lang={lang} />}
+        {/* Loading state */}
+        {SANITY_CONFIGURED && loading && (
+          <div className="space-y-8">
+            <div className="h-80 bg-ardea-gray animate-pulse" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-64 bg-ardea-gray animate-pulse" />
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Post list */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.slice(1).map(post => (
-            <PostCard key={post.id} post={post} lang={lang} />
-          ))}
-        </div>
+        {!loading && (
+          <>
+            {/* Featured post (first) */}
+            {posts[0] && <FeaturedPost post={posts[0]} lang={lang} />}
+
+            {/* Post list */}
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.slice(1).map(post => (
+                <PostCard key={post.id} post={post} lang={lang} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </main>
   )
 }
 
 function FeaturedPost({ post, lang }) {
+  const categoryLabel = typeof post.category === 'object'
+    ? tr(post.category, lang)
+    : post.category
+
   return (
     <Link
       to={`/blog/${post.slug}`}
@@ -47,7 +99,7 @@ function FeaturedPost({ post, lang }) {
       </div>
       <div className="p-8 lg:p-12 flex flex-col justify-center">
         <p className="text-ardea-brown text-xs tracking-widest uppercase mb-3">
-          {tr(post.category, lang)}
+          {categoryLabel}
         </p>
         <h2 className="font-serif text-2xl md:text-3xl text-ardea-text leading-snug mb-4 group-hover:text-ardea-cobalt transition-colors duration-200">
           {tr(post.title, lang)}
@@ -57,7 +109,7 @@ function FeaturedPost({ post, lang }) {
         </p>
         <div className="flex items-center gap-4">
           <span className="text-ardea-text-muted text-xs">
-            {new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            {post.date && new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
           <span className="text-ardea-text-muted text-xs">
             {post.readingTime} {tr(t.blog.minRead, lang)}
@@ -75,6 +127,10 @@ function FeaturedPost({ post, lang }) {
 }
 
 function PostCard({ post, lang }) {
+  const categoryLabel = typeof post.category === 'object'
+    ? tr(post.category, lang)
+    : post.category
+
   return (
     <Link
       to={`/blog/${post.slug}`}
@@ -90,7 +146,7 @@ function PostCard({ post, lang }) {
       </div>
       <div className="flex-1 flex flex-col p-6">
         <p className="text-ardea-brown text-xs tracking-widest uppercase mb-2">
-          {tr(post.category, lang)}
+          {categoryLabel}
         </p>
         <h3 className="font-serif text-xl text-ardea-text leading-snug mb-3 flex-1 group-hover:text-ardea-cobalt transition-colors duration-200">
           {tr(post.title, lang)}
@@ -100,7 +156,7 @@ function PostCard({ post, lang }) {
         </p>
         <div className="flex items-center justify-between pt-4 border-t border-ardea-gray">
           <span className="text-ardea-text-muted text-xs">
-            {new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB', { month: 'short', year: 'numeric' })}
+            {post.date && new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-GB', { month: 'short', year: 'numeric' })}
           </span>
           <span className="text-ardea-text-muted text-xs">
             {post.readingTime} {tr(t.blog.minRead, lang)}

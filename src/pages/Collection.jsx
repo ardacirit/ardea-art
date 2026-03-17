@@ -2,15 +2,48 @@ import { useState } from 'react'
 import ArtworkCard from '../components/ArtworkCard'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
-import { artworks, categories } from '../data/collections'
+import { artworks as staticArtworks, categories } from '../data/collections'
+import { useSanityQuery } from '../hooks/useSanity'
+import { ARTWORKS_QUERY } from '../lib/queries'
+import { sanityImageUrl } from '../lib/sanity'
+
+const SANITY_CONFIGURED =
+  import.meta.env.VITE_SANITY_PROJECT_ID &&
+  import.meta.env.VITE_SANITY_PROJECT_ID !== 'YOUR_PROJECT_ID'
+
+/** Normalise a Sanity artwork record into the shape ArtworkCard expects */
+function normalizeSanityArtwork(item) {
+  return {
+    id: item._id,
+    category: item.category,
+    placeholder: sanityImageUrl(item.image, { width: 600, height: 600 }),
+    title: item.title ?? {},
+    desc: item.description ?? {},
+    price: item.price ? `₺${item.price.toLocaleString('tr-TR')}` : '',
+    shopierUrl: item.shopierUrl || '#',
+    featured: item.featured ?? false,
+    sold: item.sold ?? false,
+  }
+}
 
 export default function Collection() {
   const { lang } = useLang()
   const [activeFilter, setActiveFilter] = useState('all')
 
+  const { data: sanityData, loading, error } = useSanityQuery(
+    SANITY_CONFIGURED ? ARTWORKS_QUERY : null
+  )
+
+  const artworkList = (() => {
+    if (SANITY_CONFIGURED && !loading && !error && Array.isArray(sanityData) && sanityData.length > 0) {
+      return sanityData.map(normalizeSanityArtwork)
+    }
+    return staticArtworks
+  })()
+
   const filtered = activeFilter === 'all'
-    ? artworks
-    : artworks.filter(a => a.category === activeFilter)
+    ? artworkList
+    : artworkList.filter(a => a.category === activeFilter)
 
   return (
     <main className="pt-28 pb-24">
@@ -41,20 +74,33 @@ export default function Collection() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="max-w-7xl mx-auto px-6">
-        {filtered.length === 0 ? (
-          <div className="py-24 text-center text-ardea-text-muted font-serif text-lg">
-            {lang === 'tr' ? 'Bu kategoride henüz eser yok.' : 'No works in this category yet.'}
-          </div>
-        ) : (
+      {/* Loading state */}
+      {SANITY_CONFIGURED && loading && (
+        <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filtered.map(artwork => (
-              <ArtworkCard key={artwork.id} artwork={artwork} />
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-square bg-ardea-gray animate-pulse" />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Grid */}
+      {!loading && (
+        <div className="max-w-7xl mx-auto px-6">
+          {filtered.length === 0 ? (
+            <div className="py-24 text-center text-ardea-text-muted font-serif text-lg">
+              {lang === 'tr' ? 'Bu kategoride henüz eser yok.' : 'No works in this category yet.'}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filtered.map(artwork => (
+                <ArtworkCard key={artwork.id} artwork={artwork} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Shopier note */}
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-10 border-t border-ardea-gray">

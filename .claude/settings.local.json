@@ -4,7 +4,12 @@
       "Bash(npm install:*)",
       "Bash(npm run:*)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(git --version)"
+      "Bash(git --version)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(npx vercel:*)",
+      "Bash(cat:*)",
+      "Bash(wait)"
     ]
   }
 }
