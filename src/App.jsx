@@ -10,6 +10,7 @@ import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import ArtworkDetail from './pages/ArtworkDetail'
 import NotFound from './pages/NotFound'
 import { useSanityQuery } from './hooks/useSanity'
 import { SITE_SETTINGS_QUERY } from './lib/queries'
@@ -61,6 +62,7 @@ function AppInner() {
       <Routes>
         <Route path="/"             element={<Home />} />
         <Route path="/collection"   element={<Collection />} />
+        <Route path="/koleksiyon/:slug" element={<ArtworkDetail />} />
         <Route path="/blog"         element={<Blog />} />
         <Route path="/blog/:slug"   element={<BlogPost />} />
         <Route path="/about"        element={<About />} />

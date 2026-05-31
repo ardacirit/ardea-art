@@ -17,12 +17,27 @@ export const artwork = {
       validation: (Rule) => Rule.required(),
     },
     {
+      name: 'slug',
+      title: 'Slug (URL)',
+      type: 'slug',
+      options: { source: 'title.tr', maxLength: 96 },
+      description: 'Otomatik oluşturulur — "Generate" butonuna basın.',
+      validation: (Rule) => Rule.required(),
+    },
+    {
       name: 'image',
-      title: 'Fotoğraf',
+      title: 'Ana Fotoğraf',
       type: 'image',
       options: { hotspot: true },
       description: 'Önerilen boyut: 1200×1200 px (1:1 kare) veya 1200×900 px (4:3). JPG tercih edilir, min. 800 px.',
       validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'images',
+      title: 'Ek Fotoğraflar (Galeri)',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Eserin farklı açılardan fotoğrafları. Ana fotoğraf otomatik ilk sıradadır.',
     },
     {
       name: 'description',

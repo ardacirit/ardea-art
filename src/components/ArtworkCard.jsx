@@ -1,12 +1,15 @@
+import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
 
 export default function ArtworkCard({ artwork, showShopier = true }) {
   const { lang } = useLang()
+  const slug = artwork.slug?.current || artwork.id
 
   return (
     <article className="artwork-card group flex flex-col">
       {/* Image */}
+      <Link to={`/koleksiyon/${slug}`} className="block">
       <div className="relative overflow-hidden bg-ardea-gray aspect-square">
         <img
           src={artwork.placeholder}
@@ -27,12 +30,15 @@ export default function ArtworkCard({ artwork, showShopier = true }) {
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-ardea-cobalt/0 group-hover:bg-ardea-cobalt/10 transition-all duration-500" />
       </div>
+      </Link>
 
       {/* Info */}
       <div className="flex flex-col flex-1 p-4 bg-white border-b border-ardea-gray">
-        <h3 className="font-serif text-lg text-ardea-text leading-snug mb-1">
-          {tr(artwork.title, lang)}
-        </h3>
+        <Link to={`/koleksiyon/${slug}`}>
+          <h3 className="font-serif text-lg text-ardea-text leading-snug mb-1 hover:text-ardea-cobalt transition-colors">
+            {tr(artwork.title, lang)}
+          </h3>
+        </Link>
         <p className="text-ardea-text-soft text-sm leading-relaxed line-clamp-2 mb-3 flex-1">
           {tr(artwork.desc, lang)}
         </p>

@@ -14,6 +14,7 @@ function normalizeSanityArtwork(item) {
   const catSlug = item.category?.slug?.current ?? item.category?._id ?? 'other'
   return {
     id: item._id,
+    slug: item.slug,
     categorySlug: catSlug,
     categoryTitle: item.category?.title ?? {},
     categoryEmoji: item.category?.emoji ?? '',

@@ -1,8 +1,10 @@
 export const ARTWORKS_QUERY = `*[_type == "artwork"] | order(order asc, _createdAt desc) {
   _id,
   title,
+  slug,
   "category": category->{ _id, title, slug, emoji },
   image,
+  images,
   description,
   price,
   shopierUrl,
@@ -13,8 +15,24 @@ export const ARTWORKS_QUERY = `*[_type == "artwork"] | order(order asc, _created
 export const FEATURED_ARTWORKS_QUERY = `*[_type == "artwork" && featured == true] | order(order asc) [0...6] {
   _id,
   title,
+  slug,
   "category": category->{ _id, title, slug, emoji },
   image,
+  images,
+  description,
+  price,
+  shopierUrl,
+  featured,
+  sold
+}`
+
+export const ARTWORK_BY_SLUG_QUERY = `*[_type == "artwork" && slug.current == $slug][0] {
+  _id,
+  title,
+  slug,
+  "category": category->{ _id, title, slug, emoji },
+  image,
+  images,
   description,
   price,
   shopierUrl,
