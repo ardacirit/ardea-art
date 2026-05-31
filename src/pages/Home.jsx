@@ -89,7 +89,7 @@ export default function Home() {
           <blockquote className="font-serif text-2xl md:text-3xl text-ardea-text leading-relaxed italic mb-6">
             {philosophyQuote}
           </blockquote>
-          <p className="text-ardea-brown text-sm tracking-widest uppercase">Ardea Art</p>
+          <p className="text-ardea-brown text-sm tracking-widest uppercase">Zerrin Cirit</p>
         </div>
       </section>
 

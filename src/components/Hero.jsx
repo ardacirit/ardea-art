@@ -50,7 +50,7 @@ export default function Hero({ settings }) {
 
       <div className="relative z-10 h-full flex flex-col justify-center px-6 max-w-7xl mx-auto">
         <div className={`max-w-xl transition-all duration-700 ${transitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
-          <p className="text-white/70 text-xs tracking-[0.25em] uppercase mb-6">Ardea Art</p>
+          <p className="text-white/70 text-xs tracking-[0.25em] uppercase mb-6">Zerrin Cirit</p>
           <h1 className="font-serif text-4xl md:text-6xl text-white leading-tight whitespace-pre-line mb-6 drop-shadow-sm">
             {tagline}
           </h1>

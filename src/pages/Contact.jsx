@@ -17,8 +17,8 @@ export default function Contact() {
   )
 
   const waMsg = lang === 'tr'
-    ? 'Merhaba! Ardea Art hakkında bilgi almak istiyorum.'
-    : 'Hello! I would like to learn more about Ardea Art.'
+    ? 'Merhaba! Zerrin Cirit hakkında bilgi almak istiyorum.'
+    : 'Hello! I would like to learn more about Zerrin Cirit.'
 
   return (
     <main className="pt-28 pb-24">

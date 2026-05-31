@@ -1,8 +1,8 @@
 import { useSanityQuery } from '../hooks/useSanity'
 import { SITE_SETTINGS_QUERY } from '../lib/queries'
 
-const DEFAULT_MSG_TR = 'Merhaba! Ardea Art hakkında bilgi almak istiyorum.'
-const DEFAULT_MSG_EN = 'Hello! I would like to learn more about Ardea Art.'
+const DEFAULT_MSG_TR = 'Merhaba! Zerrin Cirit hakkında bilgi almak istiyorum.'
+const DEFAULT_MSG_EN = 'Hello! I would like to learn more about Zerrin Cirit.'
 
 export default function WhatsAppButton({ lang = 'tr' }) {
   const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)

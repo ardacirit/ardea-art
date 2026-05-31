@@ -41,7 +41,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             <span className="font-serif text-xl text-ardea-text tracking-wide group-hover:text-ardea-cobalt transition-colors duration-200">
-              Ardea Art
+              Zerrin Cirit
             </span>
             <span className="text-[9px] tracking-[0.2em] uppercase text-ardea-text-muted mt-0.5">
               El Yapımı Sanat

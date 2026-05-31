@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <p className="font-serif text-2xl text-white mb-2">Ardea Art</p>
+            <p className="font-serif text-2xl text-white mb-2">Zerrin Cirit</p>
             <p className="text-xs tracking-[0.2em] uppercase text-white/40 mb-4">
               El Yapımı · Handcrafted
             </p>
@@ -90,7 +90,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/30">
-            © {year} Ardea Art. {tr(t.footer.rights, lang)}
+            © {year} Zerrin Cirit. {tr(t.footer.rights, lang)}
           </p>
           <p className="text-xs text-white/20 italic font-serif">
             {quote}
