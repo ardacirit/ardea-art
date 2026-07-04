@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
 import { t, tr } from '../data/translations'
 import { useSanityQuery } from '../hooks/useSanity'
-import { ARTWORK_BY_SLUG_QUERY } from '../lib/queries'
+import { ARTWORK_BY_SLUG_QUERY, SITE_SETTINGS_QUERY } from '../lib/queries'
 import { sanityImageUrl, urlFor } from '../lib/sanity'
 
 export default function ArtworkDetail() {
@@ -11,6 +11,7 @@ export default function ArtworkDetail() {
   const { lang } = useLang()
   const [activeImg, setActiveImg] = useState(0)
 
+  const { data: settings } = useSanityQuery(SITE_SETTINGS_QUERY)
   const { data: artwork, loading } = useSanityQuery(
     ARTWORK_BY_SLUG_QUERY,
     { slug }
@@ -58,7 +59,7 @@ export default function ArtworkDetail() {
     ? urlFor(allImages[activeImg]).width(1200).height(1200).auto('format').url()
     : null
 
-  const waNumber = '905XXXXXXXXX'
+  const waNumber = settings?.whatsappNumber || ''
   const waMsg = lang === 'tr'
     ? `Merhaba! "${tr(artwork.title, lang)}" eseri hakkında bilgi almak istiyorum.`
     : `Hello! I'd like to inquire about "${tr(artwork.title, lang)}".`
@@ -170,21 +171,23 @@ export default function ArtworkDetail() {
                 </a>
               )}
 
-              <a
-                href={`https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2
-                           border border-ardea-text text-ardea-text
-                           px-6 py-3 text-sm font-medium tracking-wide
-                           hover:bg-ardea-text hover:text-white transition-colors duration-200"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.847L.057 23.5l5.816-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.49-5.19-1.348l-.372-.22-3.453.905.921-3.36-.24-.386A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-                </svg>
-                {tr(t.collection.inquireBtn, lang)}
-              </a>
+              {waNumber && (
+                <a
+                  href={`https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2
+                             border border-ardea-text text-ardea-text
+                             px-6 py-3 text-sm font-medium tracking-wide
+                             hover:bg-ardea-text hover:text-white transition-colors duration-200"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.847L.057 23.5l5.816-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.49-5.19-1.348l-.372-.22-3.453.905.921-3.36-.24-.386A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                  </svg>
+                  {tr(t.collection.inquireBtn, lang)}
+                </a>
+              )}
             </div>
 
             {/* Shopier notu */}
