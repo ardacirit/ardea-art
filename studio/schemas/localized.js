@@ -27,13 +27,38 @@ export const localizedBlock = {
       name: 'tr',
       title: '🇹🇷 Türkçe İçerik',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image', options: { hotspot: true } }],
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Fotoğraf Açıklaması (Google için)',
+              type: 'string',
+              description: 'Fotoğrafta ne göründüğünü kısaca yazın.',
+            },
+            { name: 'caption', title: 'Fotoğraf Altı Yazısı', type: 'string' },
+          ],
+        },
+      ],
     },
     {
       name: 'en',
       title: '🇬🇧 English Content',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image', options: { hotspot: true } }],
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            { name: 'alt', title: 'Image description (for Google)', type: 'string' },
+            { name: 'caption', title: 'Caption', type: 'string' },
+          ],
+        },
+      ],
     },
   ],
 }

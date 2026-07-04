@@ -1,48 +1,60 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './app/**/*.{js,jsx}',
+    './components/**/*.{js,jsx}',
+    './lib/**/*.{js,jsx}',
   ],
   theme: {
     extend: {
       colors: {
-        ardea: {
-          white: '#FAFAF8',
-          bej: '#F5F0E8',
-          gray: '#E8E4DF',
-          'gray-mid': '#C4BDB5',
-          ink: '#211F1C',
-          brown: '#8B6F47',
-          'brown-light': '#B8956A',
-          cobalt: '#0047AB',
-          'cobalt-light': '#1A6DD4',
-          'cobalt-pale': '#EBF1FB',
-          'iznik-turquoise': '#1B9AAA',
-          'iznik-coral': '#C5462F',
-          text: '#333333',
-          'text-soft': '#666666',
-          'text-muted': '#999999',
+        // İznik palette — porcelain ground, cobalt underglaze, turquoise and
+        // coral accents. Named after the materials, not the hue.
+        porcelain: '#FBFAF7',
+        bone: '#F4F0E7',
+        line: '#E6E1D7',
+        ink: '#1C1B18',
+        smoke: '#57544B',
+        faint: '#9A958B',
+        cobalt: {
+          pale: '#EDF2FB',
+          light: '#3565C0',
+          DEFAULT: '#16418C',
+          deep: '#0D2B63',
+        },
+        turquoise: {
+          pale: '#E9F4F5',
+          DEFAULT: '#137E86',
+        },
+        coral: {
+          pale: '#F9EEEC',
+          DEFAULT: '#B23A2C',
         },
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
-        widest: '0.25em',
+        kicker: '0.28em',
       },
-      transitionTimingFunction: {
-        'slow': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      maxWidth: {
+        site: '80rem',
+        prose: '42rem',
       },
       keyframes: {
         'slow-zoom': {
-          '0%':   { transform: 'scale(1.05)' },
+          '0%': { transform: 'scale(1.06)' },
           '100%': { transform: 'scale(1)' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
       },
       animation: {
-        'slow-zoom': 'slow-zoom 8s ease-in-out forwards',
+        'slow-zoom': 'slow-zoom 9s cubic-bezier(0.2, 0.6, 0.3, 1) forwards',
+        'fade-in': 'fade-in 0.7s ease-out forwards',
       },
     },
   },

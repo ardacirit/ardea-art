@@ -4,106 +4,79 @@ export const siteSettings = {
   type: 'document',
   __experimental_actions: ['update', 'publish'],
   groups: [
-    { name: 'general',  title: '🌐 Genel' },
-    { name: 'contact',  title: '📞 İletişim' },
-    { name: 'hero',     title: '🏠 Ana Sayfa Hero' },
-    { name: 'home',     title: '🏡 Ana Sayfa Metinleri' },
-    { name: 'photos',   title: '📷 Fotoğraflar' },
-    { name: 'about',    title: '👩‍🎨 Hakkımda Metinleri' },
-    { name: 'footer',   title: '🔻 Footer' },
+    { name: 'general', title: '🌐 Genel', default: true },
+    { name: 'seo', title: '🔍 Google & Paylaşım' },
+    { name: 'contact', title: '📞 İletişim' },
+    { name: 'hero', title: '🏠 Ana Sayfa Hero' },
+    { name: 'home', title: '🏡 Ana Sayfa Metinleri' },
+    { name: 'photos', title: '📷 Fotoğraflar' },
+    { name: 'about', title: '👩‍🎨 Hakkımda Metinleri' },
+    { name: 'footer', title: '🔻 Footer' },
   ],
   fields: [
     // ── Genel ─────────────────────────────────────────────────
-    {
-      name: 'favicon',
-      title: 'Site İkonu (Favicon)',
-      type: 'image',
-      group: 'general',
-      description: 'Tarayıcı sekmesinde görünen küçük ikon. Kare olmalı, önerilen boyut: 512×512 px. PNG veya ICO.',
-    },
     {
       name: 'siteTitle',
       title: 'Site Başlığı',
       type: 'string',
       group: 'general',
-      description: 'Tarayıcı sekmesinde ve Google\'da görünen başlık. Örnek: "Ardea Art — El Yapımı Çini Sanatı"',
+      description:
+        'Tarayıcı sekmesinde ve Google\'da görünen başlık. Örnek: "Zerrin Cirit — El Yapımı Çini & Seramik"',
     },
+    {
+      name: 'favicon',
+      title: 'Site İkonu (Favicon)',
+      type: 'image',
+      group: 'general',
+      description:
+        'Tarayıcı sekmesindeki küçük ikon. Kare olmalı, önerilen: 512×512 px PNG.',
+    },
+
+    // ── Google & Paylaşım (SEO) ───────────────────────────────
+    {
+      name: 'metaDescription',
+      title: 'Google Arama Açıklaması',
+      type: 'localizedText',
+      group: 'seo',
+      description:
+        'Google sonuçlarında başlığın altında görünen 1-2 cümle (en fazla ~155 karakter). Örnek: "El yapımı çini ve seramik eserler. Geleneksel İznik desenlerinin çağdaş yorumu."',
+    },
+    {
+      name: 'ogImage',
+      title: 'Link Paylaşım Görseli',
+      type: 'image',
+      group: 'seo',
+      description:
+        'Site linki WhatsApp / Instagram / Facebook\'ta paylaşıldığında görünen kapak fotoğrafı. Yatay olmalı, önerilen: 1200×630 px. Boş bırakırsanız ilk hero slaytı kullanılır.',
+    },
+    {
+      name: 'artistLocation',
+      title: 'Atölye Şehri',
+      type: 'string',
+      group: 'seo',
+      description: 'Örnek: İstanbul, Türkiye — arama motorlarına konum bilgisi verir.',
+    },
+
     // ── İletişim ──────────────────────────────────────────────
     {
       name: 'whatsappNumber',
       title: 'WhatsApp Numarası',
       type: 'string',
       group: 'contact',
-      description: 'Başında 90 ile tam numara. Örnek: 905321234567',
+      description: 'Başında 90 ile, boşluksuz. Örnek: 905321234567',
     },
     {
       name: 'instagramHandle',
       title: 'Instagram Kullanıcı Adı',
       type: 'string',
       group: 'contact',
-      description: '@ işareti olmadan. Örnek: ardea.art',
-    },
-
-    // ── Hero ──────────────────────────────────────────────────
-    {
-      name: 'heroSlides',
-      title: '🖼️ Ana Sayfa Slaytları',
-      type: 'array',
-      group: 'hero',
-      description: 'En az 1, en fazla 5 slayt ekleyin. Her slayt için fotoğraf önerilen boyut: 1600×900 px (16:9 yatay). JPG tercih edilir.',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'image',    title: 'Fotoğraf',    type: 'image', options: { hotspot: true } },
-            { name: 'tagline',  title: 'Büyük Başlık', type: 'localizedString' },
-            { name: 'subtitle', title: 'Alt Başlık',   type: 'localizedString' },
-          ],
-          preview: {
-            select: { title: 'tagline.tr', media: 'image' },
-            prepare({ title, media }) {
-              return { title: title || 'Slayt', media }
-            },
-          },
-        },
-      ],
+      description: '@ işareti olmadan. Örnek: zerrin.cirit',
     },
     {
-      name: 'heroTagline',
-      title: 'Hero Ana Başlık (slayt yoksa)',
-      type: 'localizedString',
-      group: 'hero',
-      description: 'Slaytlarda başlık belirtilmezse bu metin gösterilir.',
-    },
-    {
-      name: 'heroSubtitle',
-      title: 'Hero Alt Başlık (slayt yoksa)',
-      type: 'localizedString',
-      group: 'hero',
-      description: 'Slaytlarda alt başlık belirtilmezse bu metin gösterilir.',
-    },
-
-    // ── Ana Sayfa Metinleri ───────────────────────────────────
-    {
-      name: 'philosophyQuote',
-      title: 'Ana Sayfa Alıntısı',
-      type: 'localizedString',
-      group: 'home',
-      description: 'Hero\'nun altındaki büyük italik alıntı.',
-    },
-    {
-      name: 'featuredTitle',
-      title: 'Öne Çıkan Eserler — Başlık',
-      type: 'localizedString',
-      group: 'home',
-      description: 'Anasayfadaki eserler bölümünün başlığı.',
-    },
-    {
-      name: 'featuredSubtitle',
-      title: 'Öne Çıkan Eserler — Açıklama',
-      type: 'localizedText',
-      group: 'home',
-      description: 'Anasayfadaki eserler bölümünün altındaki açıklama metni.',
+      name: 'email',
+      title: 'E-posta (isteğe bağlı)',
+      type: 'string',
+      group: 'contact',
     },
     {
       name: 'contactSubtitle',
@@ -120,6 +93,68 @@ export const siteSettings = {
       description: 'İletişim sayfasındaki "Özel Sipariş" kutusunun metni.',
     },
 
+    // ── Hero ──────────────────────────────────────────────────
+    {
+      name: 'heroSlides',
+      title: '🖼️ Ana Sayfa Slaytları',
+      type: 'array',
+      group: 'hero',
+      description:
+        'En fazla 5 slayt. Dikey/kareye yakın fotoğraflar en iyi sonucu verir (örnek: 1200×1400 px). Fotoğrafın odak noktasını hotspot ile ayarlayabilirsiniz.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'image', title: 'Fotoğraf', type: 'image', options: { hotspot: true } },
+            { name: 'tagline', title: 'Büyük Başlık', type: 'localizedString' },
+            { name: 'subtitle', title: 'Alt Başlık', type: 'localizedString' },
+          ],
+          preview: {
+            select: { title: 'tagline.tr', media: 'image' },
+            prepare({ title, media }) {
+              return { title: title || 'Slayt', media }
+            },
+          },
+        },
+      ],
+      validation: (Rule) => Rule.max(5),
+    },
+    {
+      name: 'heroTagline',
+      title: 'Hero Ana Başlık',
+      type: 'localizedString',
+      group: 'hero',
+      description: 'Ana sayfadaki büyük başlık. Satır bölmek için Enter yerine "\\n" kullanmayın; kısa tutun.',
+    },
+    {
+      name: 'heroSubtitle',
+      title: 'Hero Alt Başlık',
+      type: 'localizedString',
+      group: 'hero',
+      description: 'Büyük başlığın altındaki tanıtım cümlesi.',
+    },
+
+    // ── Ana Sayfa Metinleri ───────────────────────────────────
+    {
+      name: 'philosophyQuote',
+      title: 'Ana Sayfa Alıntısı',
+      type: 'localizedString',
+      group: 'home',
+      description: 'Hero\'nun altındaki büyük italik alıntı.',
+    },
+    {
+      name: 'featuredTitle',
+      title: 'Öne Çıkan Eserler — Başlık',
+      type: 'localizedString',
+      group: 'home',
+    },
+    {
+      name: 'featuredSubtitle',
+      title: 'Öne Çıkan Eserler — Açıklama',
+      type: 'localizedText',
+      group: 'home',
+    },
+
     // ── Fotoğraflar ───────────────────────────────────────────
     {
       name: 'portraitImage',
@@ -127,7 +162,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Hakkımda sayfası sağ kolon — dikey fotoğraf önerilir. Önerilen boyut: 800×1000 px (4:5 oran). JPG veya PNG.',
+      description: 'Dikey fotoğraf önerilir: 800×1000 px (4:5).',
     },
     {
       name: 'atelierImage',
@@ -135,7 +170,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Hakkımda sayfası atölye bölümü — yatay fotoğraf önerilir. Önerilen boyut: 1200×675 px (16:9 oran). JPG veya PNG.',
+      description: 'Yatay fotoğraf önerilir: 1200×750 px (16:10).',
     },
     {
       name: 'processImage',
@@ -143,7 +178,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Hakkımda sayfası teknikler bölümü — yatay fotoğraf önerilir. Önerilen boyut: 1200×675 px (16:9 oran). JPG veya PNG.',
+      description: 'Yatay fotoğraf önerilir: 1200×750 px (16:10).',
     },
     {
       name: 'homeTeaserImage',
@@ -151,7 +186,7 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Ana sayfadaki "Hakkımda" önizleme bölümü — dikey fotoğraf önerilir. Önerilen boyut: 800×1000 px (4:5 oran). JPG veya PNG.',
+      description: 'Dikey fotoğraf önerilir: 800×1000 px (4:5). Boşsa sanatçı fotoğrafı kullanılır.',
     },
 
     // ── Hakkımda Metinleri ────────────────────────────────────
@@ -160,7 +195,7 @@ export const siteSettings = {
       title: '1. Paragraf',
       type: 'localizedText',
       group: 'about',
-      description: 'Çini ile ilk tanışma hikayesi.',
+      description: 'Çini ile ilk tanışma hikayesi. Ana sayfadaki tanıtımda da görünür.',
     },
     {
       name: 'aboutP2',
@@ -181,7 +216,6 @@ export const siteSettings = {
       title: 'Atölye Açıklama Metni',
       type: 'localizedText',
       group: 'about',
-      description: 'Atölye bölümünün altındaki kısa açıklama.',
     },
     {
       name: 'aboutTechniques',
@@ -205,7 +239,7 @@ export const siteSettings = {
       title: 'Footer Alıntı',
       type: 'localizedString',
       group: 'footer',
-      description: 'Sayfa altındaki italik alıntı. Örnek: "Yavaş sanat, derin iz bırakır."',
+      description: 'Sayfa altındaki italik alıntı.',
     },
   ],
   preview: {

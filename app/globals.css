@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-porcelain font-sans text-ink antialiased;
+  }
+  ::selection {
+    @apply bg-cobalt text-porcelain;
+  }
+}
+
+@layer components {
+  .kicker {
+    @apply text-[0.65rem] font-medium uppercase tracking-kicker text-cobalt;
+  }
+  .section-title {
+    @apply font-display text-3xl leading-tight text-ink sm:text-4xl;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-3 bg-cobalt px-8 py-4 text-xs uppercase tracking-kicker text-porcelain transition-colors duration-300 hover:bg-cobalt-deep;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-3 border border-ink/25 px-8 py-4 text-xs uppercase tracking-kicker text-ink transition-colors duration-300 hover:border-cobalt hover:text-cobalt;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-3 border border-porcelain/40 px-8 py-4 text-xs uppercase tracking-kicker text-porcelain transition-colors duration-300 hover:bg-porcelain hover:text-cobalt-deep;
+  }
+  .nav-link {
+    @apply relative transition-colors duration-300;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-px w-0 bg-cobalt transition-all duration-300;
+  }
+  .nav-link:hover::after,
+  .nav-link-active::after {
+    @apply w-full;
+  }
+}
+
+/* Scroll-triggered reveal (see components/Reveal.jsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.65, 0.3, 1),
+    transform 0.9s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
