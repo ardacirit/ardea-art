@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas/index.js'
+import GuidePanel from './components/GuidePanel.jsx'
 
 export default defineConfig({
   name: 'zerrin-cirit',
@@ -14,6 +15,11 @@ export default defineConfig({
         S.list()
           .title('Yönetim Paneli')
           .items([
+            S.listItem()
+              .title('📖 Nasıl Kullanılır?')
+              .id('guide')
+              .child(S.component(GuidePanel).id('guide-panel').title('Nasıl Kullanılır?')),
+            S.divider(),
             S.listItem()
               .title('⚙️ Site Ayarları')
               .child(

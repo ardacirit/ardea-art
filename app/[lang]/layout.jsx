@@ -17,6 +17,7 @@ import {
   websiteJsonLd,
   instagramUrl,
   metaDescription,
+  siteTitleFor,
 } from '@/lib/seo'
 
 export const revalidate = 60
@@ -24,12 +25,12 @@ export const revalidate = 60
 const display = localFont({
   src: [
     {
-      path: '../../public/fonts/PlayfairDisplay-VariableFont_wght.ttf',
+      path: '../../public/fonts/PlayfairDisplay-VariableFont_wght.woff2',
       weight: '400 900',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf',
+      path: '../../public/fonts/PlayfairDisplay-Italic-VariableFont_wght.woff2',
       weight: '400 900',
       style: 'italic',
     },
@@ -41,12 +42,12 @@ const display = localFont({
 const sans = localFont({
   src: [
     {
-      path: '../../public/fonts/Inter-VariableFont_opsz_wght.ttf',
+      path: '../../public/fonts/Inter-VariableFont_opsz_wght.woff2',
       weight: '100 900',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Inter-Italic-VariableFont_opsz_wght.ttf',
+      path: '../../public/fonts/Inter-Italic-VariableFont_opsz_wght.woff2',
       weight: '100 900',
       style: 'italic',
     },
@@ -64,11 +65,7 @@ export async function generateMetadata({ params }) {
   if (!isLocale(lang)) return {}
   const settings = await getSettings()
 
-  const defaultTitle =
-    settings?.siteTitle ||
-    (lang === 'en'
-      ? 'Zerrin Cirit — Çini & Ceramic Art'
-      : 'Zerrin Cirit — Çini & Seramik Sanatı')
+  const defaultTitle = siteTitleFor(settings, lang)
 
   const description = metaDescription(
     localized(settings?.metaDescription, lang),
@@ -106,8 +103,11 @@ export async function generateMetadata({ params }) {
     authors: [{ name: ARTIST_NAME, url: SITE_URL }],
     creator: ARTIST_NAME,
     icons: settings?.favicon
-      ? { icon: urlFor(settings.favicon).width(192).height(192).url() }
-      : { icon: '/favicon.svg' },
+      ? {
+          icon: urlFor(settings.favicon).width(192).height(192).format('png').url(),
+          apple: urlFor(settings.favicon).width(180).height(180).format('png').url(),
+        }
+      : { icon: '/favicon.svg', apple: '/apple-touch-icon.png' },
     openGraph: {
       type: 'website',
       siteName: defaultTitle,
@@ -139,6 +139,8 @@ export default async function RootLayout({ children, params }) {
   if (!isLocale(lang)) notFound()
 
   const [settings, categories] = await Promise.all([getSettings(), getCategories()])
+  // Empty categories stay reachable by URL but are not advertised anywhere.
+  const visibleCategories = categories.filter((category) => category.count > 0)
 
   return (
     <html lang={lang} className={`${display.variable} ${sans.variable}`}>
@@ -149,11 +151,11 @@ export default async function RootLayout({ children, params }) {
         >
           {lang === 'en' ? 'Skip to content' : 'İçeriğe geç'}
         </a>
-        <Navbar lang={lang} categories={categories} instagram={instagramUrl(settings)} />
+        <Navbar lang={lang} categories={visibleCategories} instagram={instagramUrl(settings)} />
         <main id="content" className="min-h-screen">
           {children}
         </main>
-        <Footer lang={lang} categories={categories} settings={settings} />
+        <Footer lang={lang} categories={visibleCategories} settings={settings} />
         <WhatsAppButton number={settings?.whatsappNumber} />
         <JsonLd data={[websiteJsonLd(settings, lang), personJsonLd(settings, lang)]} />
       </body>

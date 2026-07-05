@@ -7,7 +7,6 @@ import { getSettings } from '@/lib/queries'
 import {
   absUrl,
   languageAlternates,
-  personJsonLd,
   breadcrumbJsonLd,
   metaDescription,
   SITE_URL,
@@ -20,11 +19,12 @@ export async function generateMetadata({ params }) {
   const settings = await getSettings()
   return {
     title: localized(ui.nav.about, lang),
+    // A purpose-written summary reads better in search results than a
+    // truncated first-person paragraph.
     description: metaDescription(
-      localized(settings?.aboutP1, lang),
       lang === 'en'
-        ? 'The story of çini and ceramic artist Zerrin Cirit — hand, clay, time.'
-        : 'Çini ve seramik sanatçısı Zerrin Cirit’in hikâyesi — el, toprak, zaman.'
+        ? 'The story of çini and ceramic artist Zerrin Cirit: from a 28-year banking career to traditional İznik tile art in her Istanbul studio.'
+        : "İstanbul'da yaşayan çini ve seramik sanatçısı Zerrin Cirit'in hikâyesi: 28 yıllık bankacılık kariyerinden geleneksel İznik çini sanatına uzanan yolculuk."
     ),
     alternates: {
       canonical: absUrl(`/${lang}/about`),
@@ -157,9 +157,9 @@ export default async function AboutPage({ params }) {
             '@type': 'ProfilePage',
             url: absUrl(`/${lang}/about`),
             inLanguage: lang,
+            // The full Person block is already emitted once by the layout.
             mainEntity: { '@id': `${SITE_URL}/#artist` },
           },
-          personJsonLd(settings, lang),
           breadcrumbJsonLd([
             { name: localized(ui.nav.home, lang), url: absUrl(`/${lang}`) },
             { name: localized(ui.nav.about, lang), url: absUrl(`/${lang}/about`) },

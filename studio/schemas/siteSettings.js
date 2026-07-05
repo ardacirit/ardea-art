@@ -21,7 +21,7 @@ export const siteSettings = {
       type: 'string',
       group: 'general',
       description:
-        'Tarayıcı sekmesinde ve Google\'da görünen başlık. Örnek: "Zerrin Cirit — El Yapımı Çini & Seramik"',
+        'Tarayıcı sekmesinde ve Google\'da görünen başlık. Google\'da bulunmak için mesleğinizi de içersin. Önerilen: "Zerrin Cirit — Çini ve Seramik Sanatçısı". Sadece isim yazarsanız site tamamlayıcıyı kendisi ekler.',
     },
     {
       name: 'favicon',
@@ -29,7 +29,7 @@ export const siteSettings = {
       type: 'image',
       group: 'general',
       description:
-        'Tarayıcı sekmesindeki küçük ikon. Kare olmalı, önerilen: 512×512 px PNG.',
+        'Tarayıcı sekmesindeki küçük ikon. Kare ve PNG olmalı (arka planı şeffaf olabilir), önerilen: 512×512 px. Boş bırakırsanız sitenin hazır çini deseni ikonu kullanılır.',
     },
 
     // ── Google & Paylaşım (SEO) ───────────────────────────────

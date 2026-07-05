@@ -9,6 +9,7 @@ export default function ArtworkCard({
   priority = false,
   aspect = 'aspect-[4/5]',
   sizes = '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw',
+  heading: Heading = 'h3',
 }) {
   const title = localized(artwork.title, lang)
   const category = localized(artwork.category?.title, lang)
@@ -35,9 +36,9 @@ export default function ArtworkCard({
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-4">
         <div>
-          <h3 className="font-display text-lg leading-snug text-ink transition-colors group-hover:text-cobalt">
+          <Heading className="font-display text-lg leading-snug text-ink transition-colors group-hover:text-cobalt">
             {title}
-          </h3>
+          </Heading>
           <p className="mt-1 text-[0.7rem] uppercase tracking-kicker text-faint">
             {category}
             {artwork.year ? ` · ${artwork.year}` : ''}

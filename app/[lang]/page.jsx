@@ -4,7 +4,6 @@ import HeroCarousel from '@/components/HeroCarousel'
 import ArtworkCard from '@/components/ArtworkCard'
 import SanityImage from '@/components/SanityImage'
 import Reveal from '@/components/Reveal'
-import JsonLd from '@/components/JsonLd'
 
 import { ui, localized, formatDate } from '@/lib/i18n'
 import {
@@ -14,7 +13,7 @@ import {
   getBlogPosts,
 } from '@/lib/queries'
 import { urlFor, hotspotPosition, artworkAlt, ogImageUrl } from '@/lib/image'
-import { absUrl, languageAlternates, metaDescription, breadcrumbJsonLd } from '@/lib/seo'
+import { absUrl, languageAlternates, metaDescription, siteTitleFor } from '@/lib/seo'
 
 export const revalidate = 60
 
@@ -22,14 +21,8 @@ export async function generateMetadata({ params }) {
   const { lang } = await params
   const settings = await getSettings()
 
-  const title =
-    settings?.siteTitle ||
-    (lang === 'en'
-      ? 'Zerrin Cirit — Çini & Ceramic Art'
-      : 'Zerrin Cirit — Çini & Seramik Sanatı')
-
   return {
-    title: { absolute: title },
+    title: { absolute: siteTitleFor(settings, lang) },
     description: metaDescription(
       localized(settings?.metaDescription, lang),
       localized(ui.hero.sub, lang)
@@ -45,12 +38,13 @@ const CARD_ASPECTS = ['aspect-[4/5]', 'aspect-[3/4]', 'aspect-[4/5]']
 
 export default async function HomePage({ params }) {
   const { lang } = await params
-  const [settings, categories, featured, posts] = await Promise.all([
+  const [settings, allCategories, featured, posts] = await Promise.all([
     getSettings(),
     getCategories(),
     getFeaturedArtworks(),
     getBlogPosts(),
   ])
+  const categories = allCategories.filter((category) => category.count > 0)
 
   // Hero slides: editor-managed slides first, otherwise featured artworks.
   const slideSources =
@@ -314,12 +308,6 @@ export default async function HomePage({ params }) {
           </Link>
         </Reveal>
       </section>
-
-      <JsonLd
-        data={breadcrumbJsonLd([
-          { name: localized(ui.nav.home, lang), url: absUrl(`/${lang}`) },
-        ])}
-      />
     </>
   )
 }

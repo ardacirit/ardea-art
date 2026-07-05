@@ -50,6 +50,8 @@ export const artwork = {
       type: 'boolean',
       group: 'main',
       initialValue: false,
+      description:
+        'Açarsanız eser ana sayfadaki "Seçme Eserler" bölümünde öne çıkar. 4-6 eser işaretlemeniz önerilir.',
     },
     {
       name: 'order',
@@ -130,7 +132,8 @@ export const artwork = {
       title: 'Fiyat (₺)',
       type: 'number',
       group: 'sales',
-      description: 'Sadece sayı girin, örnek: 1200. Boş bırakırsanız fiyat gösterilmez.',
+      description:
+        'Sadece sayı girin, örnek: 1200. Boş bırakırsanız sitede "Fiyat için iletişime geçin" yazar.',
     },
     {
       name: 'shopierUrl',

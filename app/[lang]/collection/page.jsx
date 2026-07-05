@@ -33,7 +33,8 @@ export async function generateMetadata({ params }) {
 
 export default async function CollectionPage({ params }) {
   const { lang } = await params
-  const [artworks, categories] = await Promise.all([getAllArtworks(), getCategories()])
+  const [artworks, allCategories] = await Promise.all([getAllArtworks(), getCategories()])
+  const categories = allCategories.filter((category) => category.count > 0)
 
   return (
     <div className="mx-auto max-w-site px-6 pb-24 pt-36 lg:px-10">
@@ -52,7 +53,7 @@ export default async function CollectionPage({ params }) {
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {artworks.map((artwork, index) => (
             <Reveal key={artwork._id} delay={(index % 3) * 80}>
-              <ArtworkCard artwork={artwork} lang={lang} priority={index < 3} />
+              <ArtworkCard artwork={artwork} lang={lang} priority={index < 3} heading="h2" />
             </Reveal>
           ))}
         </div>

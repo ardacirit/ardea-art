@@ -102,6 +102,25 @@ export default async function ContactPage({ params }) {
         </Reveal>
       </div>
 
+      {settings?.email && (
+        <Reveal delay={200} className="mt-6">
+          <a
+            href={`mailto:${settings.email}`}
+            className="group flex flex-wrap items-center justify-between gap-4 border border-line bg-porcelain p-6 transition-colors duration-300 hover:border-cobalt sm:px-8"
+          >
+            <span>
+              <span className="block font-display text-lg text-ink transition-colors group-hover:text-cobalt">
+                {localized(ui.contact.email, lang)}
+              </span>
+              <span className="mt-1 block text-sm text-smoke">
+                {localized(ui.contact.emailDesc, lang)}
+              </span>
+            </span>
+            <span className="text-sm tracking-widest text-faint">{settings.email}</span>
+          </a>
+        </Reveal>
+      )}
+
       {localized(settings?.customOrderText, lang) && (
         <Reveal delay={220} className="mt-10">
           <div className="border border-cobalt/20 bg-cobalt-pale p-8 sm:p-10">

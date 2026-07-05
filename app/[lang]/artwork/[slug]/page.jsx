@@ -115,8 +115,11 @@ export default async function ArtworkPage({ params }) {
 
         <div>
           {category && (
-            <p className="kicker">
-              {artwork.category?.emoji ? `${artwork.category.emoji} ` : ''}
+            <p className="kicker flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="inline-block h-2 w-2 rounded-full bg-cobalt"
+              />
               {category}
             </p>
           )}
@@ -145,12 +148,20 @@ export default async function ArtworkPage({ params }) {
             </dl>
           )}
 
-          {price && !artwork.sold && (
+          {!artwork.sold && (
             <div className="mt-9">
-              <p className="font-display text-3xl text-ink">{price}</p>
-              <p className="mt-2 text-sm text-faint">
-                {localized(ui.artwork.priceNote, lang)}
-              </p>
+              {price ? (
+                <>
+                  <p className="font-display text-3xl text-ink">{price}</p>
+                  <p className="mt-2 text-sm text-faint">
+                    {localized(ui.artwork.priceNote, lang)}
+                  </p>
+                </>
+              ) : (
+                <p className="font-display text-xl text-ink">
+                  {localized(ui.artwork.priceOnRequest, lang)}
+                </p>
+              )}
             </div>
           )}
 

@@ -25,7 +25,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { lang, category: slug } = await params
-  const category = await getCategory(slug)
+  const [category, artworks] = await Promise.all([
+    getCategory(slug),
+    getArtworksByCategory(slug),
+  ])
   if (!category) return {}
 
   const title = localized(category.title, lang)
@@ -33,6 +36,9 @@ export async function generateMetadata({ params }) {
 
   return {
     title,
+    // Empty collections stay reachable but out of the index until they
+    // have at least one work.
+    robots: artworks.length === 0 ? { index: false, follow: true } : undefined,
     description: metaDescription(
       localized(category.description, lang),
       lang === 'en'
@@ -49,12 +55,13 @@ export async function generateMetadata({ params }) {
 
 export default async function CategoryPage({ params }) {
   const { lang, category: slug } = await params
-  const [category, categories, artworks] = await Promise.all([
+  const [category, allCategories, artworks] = await Promise.all([
     getCategory(slug),
     getCategories(),
     getArtworksByCategory(slug),
   ])
   if (!category) notFound()
+  const categories = allCategories.filter((item) => item.count > 0)
 
   const title = localized(category.title, lang)
 
@@ -80,7 +87,7 @@ export default async function CategoryPage({ params }) {
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {artworks.map((artwork, index) => (
             <Reveal key={artwork._id} delay={(index % 3) * 80}>
-              <ArtworkCard artwork={artwork} lang={lang} priority={index < 3} />
+              <ArtworkCard artwork={artwork} lang={lang} priority={index < 3} heading="h2" />
             </Reveal>
           ))}
         </div>
