@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { ui, localized } from '@/lib/i18n'
+import { ui, localized, unquote } from '@/lib/i18n'
 import { instagramUrl } from '@/lib/seo'
 
 export default function Footer({ lang, categories = [], settings }) {
   const year = new Date().getFullYear()
   const whatsapp = (settings?.whatsappNumber || '905345983646').replace(/\D/g, '')
+  const quote = unquote(localized(settings?.footerQuote, lang))
 
   const links = [
     { href: `/${lang}`, label: localized(ui.nav.home, lang) },
@@ -92,11 +93,7 @@ export default function Footer({ lang, categories = [], settings }) {
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-line pt-8 sm:flex-row sm:items-center">
-          {localized(settings?.footerQuote, lang) && (
-            <p className="font-display italic text-smoke">
-              “{localized(settings.footerQuote, lang)}”
-            </p>
-          )}
+          {quote && <p className="font-display italic text-smoke">“{quote}”</p>}
           <p className="text-xs text-faint">
             © {year} Zerrin Cirit — {localized(ui.footer.rights, lang)}
           </p>

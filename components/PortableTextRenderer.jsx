@@ -61,7 +61,16 @@ const components = {
   },
 }
 
+const isEmptyBlock = (block) =>
+  block?._type === 'block' && !block.children?.some((child) => child.text?.trim())
+
 export default function PortableTextRenderer({ value }) {
-  if (!value) return null
-  return <PortableText value={value} components={components} />
+  if (!Array.isArray(value)) return null
+  // Stray Enter presses at the start/end of a post render as blank gaps;
+  // empty lines *between* paragraphs are left as the author typed them.
+  let start = 0
+  let end = value.length
+  while (start < end && isEmptyBlock(value[start])) start++
+  while (end > start && isEmptyBlock(value[end - 1])) end--
+  return <PortableText value={value.slice(start, end)} components={components} />
 }

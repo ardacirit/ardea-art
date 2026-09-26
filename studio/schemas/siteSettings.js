@@ -140,7 +140,8 @@ export const siteSettings = {
       title: 'Ana Sayfa Alıntısı',
       type: 'localizedString',
       group: 'home',
-      description: 'Hero\'nun altındaki büyük italik alıntı.',
+      description:
+        'Hero\'nun altındaki büyük italik alıntı. Tırnak işareti koymanıza gerek yok — site kendisi ekler.',
     },
     {
       name: 'featuredTitle',
@@ -186,7 +187,8 @@ export const siteSettings = {
       type: 'image',
       group: 'photos',
       options: { hotspot: true },
-      description: 'Dikey fotoğraf önerilir: 800×1000 px (4:5). Boşsa sanatçı fotoğrafı kullanılır.',
+      description:
+        'Dikey fotoğraf önerilir: 800×1000 px (4:5). Boşsa sanatçı fotoğrafı, o da yoksa üretim süreci fotoğrafı kullanılır.',
     },
 
     // ── Hakkımda Metinleri ────────────────────────────────────
@@ -239,7 +241,8 @@ export const siteSettings = {
       title: 'Footer Alıntı',
       type: 'localizedString',
       group: 'footer',
-      description: 'Sayfa altındaki italik alıntı.',
+      description:
+        'Sayfa altındaki italik alıntı. Tırnak işareti koymanıza gerek yok — site kendisi ekler.',
     },
   ],
   preview: {

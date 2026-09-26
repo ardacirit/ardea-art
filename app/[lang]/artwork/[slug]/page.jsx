@@ -6,9 +6,9 @@ import ArtworkCard from '@/components/ArtworkCard'
 import Reveal from '@/components/Reveal'
 import JsonLd from '@/components/JsonLd'
 
-import { ui, localized, formatPrice } from '@/lib/i18n'
+import { ui, localized, formatPrice, splitParagraphs } from '@/lib/i18n'
 import { getArtwork, getRelatedArtworks, getSettings, getAllSlugs } from '@/lib/queries'
-import { urlFor, hotspotPosition, artworkAlt, ogImageUrl } from '@/lib/image'
+import { urlFor, hotspotPosition, imageRatio, artworkAlt, ogImageUrl } from '@/lib/image'
 import {
   absUrl,
   languageAlternates,
@@ -59,7 +59,7 @@ export default async function ArtworkPage({ params }) {
 
   const title = localized(artwork.title, lang)
   const category = localized(artwork.category?.title, lang)
-  const description = localized(artwork.description, lang)
+  const paragraphs = splitParagraphs(localized(artwork.description, lang))
   const price = formatPrice(artwork.price, lang)
 
   const photos = [artwork.image, ...(artwork.images || [])]
@@ -72,6 +72,7 @@ export default async function ArtworkPage({ params }) {
           ? artworkAlt(artwork, lang)
           : `${title} — ${index + 1}. ${lang === 'en' ? 'view' : 'görünüm'}`),
       position: hotspotPosition(image),
+      ratio: imageRatio(image),
     }))
 
   const pageUrl = absUrl(`/${lang}/artwork/${slug}`)
@@ -89,28 +90,32 @@ export default async function ArtworkPage({ params }) {
   return (
     <div className="mx-auto max-w-site px-6 pb-24 pt-32 lg:px-10">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="text-xs uppercase tracking-kicker text-faint">
-        <Link href={`/${lang}/collection`} className="transition-colors hover:text-cobalt">
+      {/* One line; the full title is the h1 right below, so the last crumb may truncate */}
+      <nav
+        aria-label="Breadcrumb"
+        className="flex min-w-0 items-center whitespace-nowrap text-xs uppercase tracking-kicker text-faint"
+      >
+        <Link href={`/${lang}/collection`} className="shrink-0 transition-colors hover:text-cobalt">
           {localized(ui.nav.collection, lang)}
         </Link>
         {artwork.category?.slug?.current && (
           <>
-            <span className="mx-2" aria-hidden="true">/</span>
+            <span className="mx-2 shrink-0" aria-hidden="true">/</span>
             <Link
               href={`/${lang}/collection/${artwork.category.slug.current}`}
-              className="transition-colors hover:text-cobalt"
+              className="shrink-0 transition-colors hover:text-cobalt"
             >
               {category}
             </Link>
           </>
         )}
-        <span className="mx-2" aria-hidden="true">/</span>
-        <span className="text-smoke">{title}</span>
+        <span className="mx-2 shrink-0" aria-hidden="true">/</span>
+        <span className="truncate text-smoke" aria-current="page">{title}</span>
       </nav>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <ArtworkGallery photos={photos} />
+          <ArtworkGallery photos={photos} lang={lang} />
         </div>
 
         <div>
@@ -133,7 +138,15 @@ export default async function ArtworkPage({ params }) {
             </p>
           )}
 
-          {description && <p className="mt-7 leading-loose text-smoke">{description}</p>}
+          {paragraphs.length > 0 && (
+            <div className="mt-7 space-y-5 leading-loose text-smoke">
+              {paragraphs.map((paragraph, index) => (
+                <p key={index} className="whitespace-pre-line">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
 
           {specs.length > 0 && (
             <dl className="mt-9 divide-y divide-line border-y border-line">

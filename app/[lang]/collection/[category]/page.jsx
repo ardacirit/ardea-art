@@ -42,8 +42,8 @@ export async function generateMetadata({ params }) {
     description: metaDescription(
       localized(category.description, lang),
       lang === 'en'
-        ? `${title} — handmade works by Zerrin Cirit.`
-        : `${title} — Zerrin Cirit imzalı el yapımı eserler.`
+        ? `${title} by Zerrin Cirit: ${artworks.length || ''} original handmade works, each hand-painted and kiln-fired in her studio. Stories, dimensions and how to order.`
+        : `${title} koleksiyonu: Zerrin Cirit'in atölyesinde elle boyanıp fırınlanmış ${artworks.length || ''} özgün eser. Hikayeleri, ölçüleri ve sipariş bilgisi.`
     ),
     alternates: {
       canonical: absUrl(`/${lang}/collection/${slug}`),
@@ -77,9 +77,11 @@ export default async function CategoryPage({ params }) {
         )}
       </Reveal>
 
-      <Reveal delay={100} className="mt-10">
-        <CategoryChips lang={lang} categories={categories} active={slug} />
-      </Reveal>
+      {categories.length > 1 && (
+        <Reveal delay={100} className="mt-10">
+          <CategoryChips lang={lang} categories={categories} active={slug} />
+        </Reveal>
+      )}
 
       {artworks.length === 0 ? (
         <p className="mt-16 text-smoke">{localized(ui.collection.empty, lang)}</p>

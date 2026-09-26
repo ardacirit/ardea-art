@@ -16,15 +16,15 @@ export const revalidate = 60
 
 export async function generateMetadata({ params }) {
   const { lang } = await params
-  const settings = await getSettings()
   return {
     title: localized(ui.nav.about, lang),
     // A purpose-written summary reads better in search results than a
-    // truncated first-person paragraph.
+    // truncated first-person paragraph. Kept free of years and places so it
+    // can never contradict what the artist writes in the Studio.
     description: metaDescription(
       lang === 'en'
-        ? 'The story of çini and ceramic artist Zerrin Cirit: from a 28-year banking career to traditional İznik tile art in her Istanbul studio.'
-        : "İstanbul'da yaşayan çini ve seramik sanatçısı Zerrin Cirit'in hikâyesi: 28 yıllık bankacılık kariyerinden geleneksel İznik çini sanatına uzanan yolculuk."
+        ? 'The story of çini and ceramic artist Zerrin Cirit: a journey into traditional tile art after a long career in banking, her studio and her techniques.'
+        : "Çini ve seramik sanatçısı Zerrin Cirit'in hikayesi: bankacılık kariyerinin ardından başlayan çini yolculuğu, atölyesi ve kullandığı teknikler."
     ),
     alternates: {
       canonical: absUrl(`/${lang}/about`),
@@ -46,7 +46,15 @@ export default async function AboutPage({ params }) {
 
   return (
     <div className="pb-24 pt-36">
-      <div className="mx-auto grid max-w-site gap-14 px-6 lg:grid-cols-[1.2fr_1fr] lg:gap-20 lg:px-10">
+      {/* Without a portrait the story gets one comfortable reading column
+          instead of a half-empty two-column grid. */}
+      <div
+        className={`mx-auto grid gap-14 px-6 lg:px-10 ${
+          settings?.portraitImage
+            ? 'max-w-site lg:grid-cols-[1.2fr_1fr] lg:gap-20'
+            : 'max-w-3xl'
+        }`}
+      >
         <Reveal>
           <p className="kicker">{localized(ui.about.kicker, lang)}</p>
           <h1 className="section-title mt-4">{localized(ui.about.title, lang)}</h1>
@@ -102,7 +110,7 @@ export default async function AboutPage({ params }) {
               </Reveal>
             )}
             <Reveal delay={120}>
-              <p className="kicker">{localized(ui.about.atelier, lang)}</p>
+              <p className="kicker">{localized(ui.about.atelierKicker, lang)}</p>
               <h2 className="section-title mt-4">{localized(ui.about.atelier, lang)}</h2>
               {localized(settings?.aboutAtelierText, lang) && (
                 <p className="mt-6 leading-loose text-smoke">
@@ -118,7 +126,7 @@ export default async function AboutPage({ params }) {
       {techniques.length > 0 && (
         <section className="mx-auto grid max-w-site items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:px-10">
           <Reveal>
-            <p className="kicker">{localized(ui.about.techniques, lang)}</p>
+            <p className="kicker">{localized(ui.about.techniquesKicker, lang)}</p>
             <h2 className="section-title mt-4">{localized(ui.about.techniques, lang)}</h2>
             <ol className="mt-8 space-y-4">
               {techniques.map((technique, index) => (

@@ -43,9 +43,12 @@ export default async function CollectionPage({ params }) {
         <h1 className="section-title mt-4">{localized(ui.collection.title, lang)}</h1>
       </Reveal>
 
-      <Reveal delay={100} className="mt-10">
-        <CategoryChips lang={lang} categories={categories} active={null} />
-      </Reveal>
+      {/* Filters only make sense once there is something to filter between */}
+      {categories.length > 1 && (
+        <Reveal delay={100} className="mt-10">
+          <CategoryChips lang={lang} categories={categories} active={null} />
+        </Reveal>
+      )}
 
       {artworks.length === 0 ? (
         <p className="mt-16 text-smoke">{localized(ui.collection.empty, lang)}</p>

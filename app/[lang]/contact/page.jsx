@@ -1,4 +1,5 @@
 import Reveal from '@/components/Reveal'
+import WhatsAppIcon from '@/components/WhatsAppIcon'
 import JsonLd from '@/components/JsonLd'
 
 import { ui, localized } from '@/lib/i18n'
@@ -61,9 +62,7 @@ export default async function ContactPage({ params }) {
             className="group block h-full border border-line bg-porcelain p-8 transition-colors duration-300 hover:border-cobalt"
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366]/10 text-[#128C4B]">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden="true">
-                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z" />
-              </svg>
+              <WhatsAppIcon />
             </span>
             <h2 className="mt-5 font-display text-xl text-ink transition-colors group-hover:text-cobalt">
               {localized(ui.contact.whatsapp, lang)}

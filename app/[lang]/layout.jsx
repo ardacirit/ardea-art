@@ -102,10 +102,12 @@ export async function generateMetadata({ params }) {
     ],
     authors: [{ name: ARTIST_NAME, url: SITE_URL }],
     creator: ARTIST_NAME,
+    // fit('crop') keeps icons square even when the uploaded logo is not
+    // (without it Sanity returns e.g. 192×128 and browsers squash it).
     icons: settings?.favicon
       ? {
-          icon: urlFor(settings.favicon).width(192).height(192).format('png').url(),
-          apple: urlFor(settings.favicon).width(180).height(180).format('png').url(),
+          icon: urlFor(settings.favicon).width(192).height(192).fit('crop').format('png').url(),
+          apple: urlFor(settings.favicon).width(180).height(180).fit('crop').format('png').url(),
         }
       : { icon: '/favicon.svg', apple: '/apple-touch-icon.png' },
     openGraph: {

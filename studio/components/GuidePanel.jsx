@@ -118,7 +118,7 @@ export default function GuidePanel() {
 
       <h2 style={styles.h2}>😌 Bir şey ters giderse</h2>
       <p>
-        Panikelemeyin: Publish'e basmadıysanız hiçbir şey olmamıştır — sayfadan
+        Paniklemeyin: Publish'e basmadıysanız hiçbir şey olmamıştır — sayfadan
         çıkın, yeter. Yanlışlıkla Publish'lediyseniz belgeyi açıp sağ alttaki{' '}
         <b>⋮ menüsünden "Revert to last published / önceki sürüme dön"</b>{' '}
         seçebilir ya da değeri elle düzeltip tekrar Publish'leyebilirsiniz.

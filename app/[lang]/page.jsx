@@ -5,7 +5,7 @@ import ArtworkCard from '@/components/ArtworkCard'
 import SanityImage from '@/components/SanityImage'
 import Reveal from '@/components/Reveal'
 
-import { ui, localized, formatDate } from '@/lib/i18n'
+import { ui, localized, formatDate, unquote } from '@/lib/i18n'
 import {
   getSettings,
   getCategories,
@@ -71,8 +71,16 @@ export default async function HomePage({ params }) {
     localized(settings?.heroTagline, lang) || localized(ui.hero.tagline, lang)
   const heroSubtitle =
     localized(settings?.heroSubtitle, lang) || localized(ui.hero.sub, lang)
-  const quote = localized(settings?.philosophyQuote, lang)
-  const aboutImage = settings?.homeTeaserImage || settings?.portraitImage
+  const eyebrow = [localized(ui.hero.eyebrow, lang), settings?.artistLocation]
+    .filter(Boolean)
+    .join(' · ')
+  const quote = unquote(localized(settings?.philosophyQuote, lang))
+  // Until a portrait exists, the studio "process" shot (her hand at work) is
+  // the most personal picture available for the artist teaser.
+  const aboutImage =
+    settings?.homeTeaserImage || settings?.portraitImage || settings?.processImage
+  const aboutImageIsPortrait = Boolean(settings?.homeTeaserImage || settings?.portraitImage)
+  const singleCategory = categories.length === 1
   const latestPosts = posts.slice(0, 3)
 
   return (
@@ -81,7 +89,7 @@ export default async function HomePage({ params }) {
       <section className="grid lg:min-h-screen lg:grid-cols-[1.05fr_1fr]">
         <div className="flex flex-col justify-center px-6 pb-16 pt-36 lg:px-10 lg:pb-24 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
           <Reveal>
-            <p className="kicker">{localized(ui.hero.kicker, lang)}</p>
+            <p className="kicker">{eyebrow}</p>
             <h1 className="mt-6 whitespace-pre-line font-display text-5xl leading-[1.05] text-ink sm:text-6xl xl:text-7xl">
               {heroTagline}
             </h1>
@@ -98,10 +106,14 @@ export default async function HomePage({ params }) {
           </Reveal>
         </div>
         <div className="relative min-h-[55vh] lg:min-h-full">
-          <HeroCarousel slides={slides} />
+          {/* On desktop the image starts below the transparent navbar so the
+              menu links never sit on top of a photo (unreadable on light shots). */}
+          <div className="absolute inset-0 lg:top-20">
+            <HeroCarousel slides={slides} />
+          </div>
           <span
             aria-hidden="true"
-            className="absolute inset-y-0 left-0 hidden w-1 bg-cobalt lg:block"
+            className="absolute bottom-0 left-0 top-20 hidden w-1 bg-cobalt lg:block"
           />
         </div>
       </section>
@@ -175,20 +187,28 @@ export default async function HomePage({ params }) {
             </Reveal>
             <div
               className={`mt-12 grid gap-8 ${
-                categories.length > 2 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'
+                singleCategory
+                  ? ''
+                  : categories.length > 2
+                    ? 'sm:grid-cols-2 lg:grid-cols-3'
+                    : 'sm:grid-cols-2'
               }`}
             >
               {categories.map((category, index) => (
                 <Reveal key={category._id} delay={index * 100}>
                   <Link
                     href={`/${lang}/collection/${category.slug.current}`}
-                    className="group relative block aspect-[16/11] overflow-hidden bg-line"
+                    className={`group relative block overflow-hidden bg-line ${
+                      // A lone collection becomes a full-width banner instead of
+                      // a half-width card next to an empty column.
+                      singleCategory ? 'aspect-[4/3] sm:aspect-[21/9]' : 'aspect-[16/11]'
+                    }`}
                   >
                     {category.cover && (
                       <SanityImage
                         image={category.cover}
                         alt={`${localized(category.title, lang)} — Zerrin Cirit`}
-                        sizes="(min-width: 640px) 50vw, 100vw"
+                        sizes={singleCategory ? '100vw' : '(min-width: 640px) 50vw, 100vw'}
                         className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                       />
                     )}
@@ -218,21 +238,29 @@ export default async function HomePage({ params }) {
       )}
 
       {/* ── About teaser ─────────────────────────────────────────────── */}
-      <section className="mx-auto grid max-w-site items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:px-10 lg:py-28">
+      <section
+        className={`mx-auto grid max-w-site items-center gap-12 px-6 py-20 lg:px-10 lg:py-28 ${
+          aboutImage ? 'lg:grid-cols-2' : ''
+        }`}
+      >
         {aboutImage && (
           <Reveal className="relative aspect-[4/5] overflow-hidden bg-bone">
             <SanityImage
               image={aboutImage}
               alt={
-                lang === 'en'
-                  ? 'Zerrin Cirit in her studio'
-                  : 'Zerrin Cirit atölyesinde'
+                aboutImageIsPortrait
+                  ? lang === 'en'
+                    ? 'Zerrin Cirit in her studio'
+                    : 'Zerrin Cirit atölyesinde'
+                  : lang === 'en'
+                    ? 'Zerrin Cirit hand-painting a çini piece'
+                    : 'Zerrin Cirit elle çini boyarken'
               }
               sizes="(min-width: 1024px) 45vw, 100vw"
             />
           </Reveal>
         )}
-        <Reveal delay={120}>
+        <Reveal delay={120} className={aboutImage ? '' : 'max-w-2xl'}>
           <p className="kicker">{localized(ui.home.aboutKicker, lang)}</p>
           <h2 className="section-title mt-4">{localized(ui.home.aboutTitle, lang)}</h2>
           {localized(settings?.aboutP1, lang) && (

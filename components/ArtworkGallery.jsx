@@ -2,13 +2,18 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
+import { ui, localized } from '@/lib/i18n'
 
 /**
  * Artwork photo gallery with a full-screen lightbox.
- * `photos`: [{ src, alt, position }] — src is a full Sanity CDN URL, resizing
- * is handled by the global next/image loader.
+ * `photos`: [{ src, alt, position, ratio }] — src is a full Sanity CDN URL,
+ * resizing is handled by the global next/image loader.
+ *
+ * The main frame takes the first photo's own (Studio-cropped) proportions and
+ * shows every photo whole: on a product page nobody wants the edge of the
+ * piece cut off by a fixed 4:5 box.
  */
-export default function ArtworkGallery({ photos = [] }) {
+export default function ArtworkGallery({ photos = [], lang = 'tr' }) {
   const [active, setActive] = useState(0)
   const [lightbox, setLightbox] = useState(false)
 
@@ -38,14 +43,17 @@ export default function ArtworkGallery({ photos = [] }) {
 
   if (photos.length === 0) return null
   const current = photos[active]
+  // Clamp so a panorama or a very tall shot still gives a sensible frame.
+  const frameRatio = Math.min(Math.max(photos[0].ratio || 1, 3 / 4), 3 / 2)
 
   return (
     <div>
       <button
         type="button"
         onClick={() => setLightbox(true)}
-        className="group relative block aspect-[4/5] w-full cursor-zoom-in overflow-hidden bg-bone"
-        aria-label={current.alt}
+        className="group relative block w-full cursor-zoom-in overflow-hidden bg-bone"
+        style={{ aspectRatio: frameRatio }}
+        aria-label={`${localized(ui.artwork.zoom, lang)}: ${current.alt}`}
       >
         <Image
           key={current.src}
@@ -54,8 +62,7 @@ export default function ArtworkGallery({ photos = [] }) {
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"
           priority
-          className="animate-fade-in object-cover"
-          style={{ objectPosition: current.position }}
+          className="animate-fade-in object-contain"
         />
         <span className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-porcelain/85 text-ink opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5" aria-hidden="true">
@@ -110,7 +117,7 @@ export default function ArtworkGallery({ photos = [] }) {
           <button
             type="button"
             onClick={() => setLightbox(false)}
-            aria-label="Close"
+            aria-label={localized(ui.nav.close, lang)}
             className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-6 w-6" aria-hidden="true">
@@ -126,7 +133,7 @@ export default function ArtworkGallery({ photos = [] }) {
                   event.stopPropagation()
                   prev()
                 }}
-                aria-label="Previous"
+                aria-label={localized(ui.artwork.previous, lang)}
                 className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white sm:left-6"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-6 w-6" aria-hidden="true">
@@ -139,7 +146,7 @@ export default function ArtworkGallery({ photos = [] }) {
                   event.stopPropagation()
                   next()
                 }}
-                aria-label="Next"
+                aria-label={localized(ui.artwork.next, lang)}
                 className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white sm:right-6"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-6 w-6" aria-hidden="true">
