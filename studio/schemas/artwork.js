@@ -114,10 +114,10 @@ export const artwork = {
     {
       name: 'dimensions',
       title: 'Ölçüler',
-      type: 'localizedString',
+      type: 'string',
       group: 'details',
       description:
-        'Örnek TR: "44 × 44 cm (çerçeveli)" veya "Ø 30 cm" (tabak için) — EN: "44 × 44 cm (framed)"',
+        'İki dilde de aynı görünür; sadece sayı ve işaret yazın. Örnekler: 44 × 44 cm (çerçeveli tablo) · Ø 30 cm (tabak) · Ø 25 × 36,5 cm (vazo: çap × yükseklik). "Çerçeveli" gibi kelimeleri Teknik kutusuna yazın.',
     },
     {
       name: 'technique',
