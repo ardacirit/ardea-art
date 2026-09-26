@@ -114,9 +114,10 @@ export const artwork = {
     {
       name: 'dimensions',
       title: 'Ölçüler',
-      type: 'string',
+      type: 'localizedString',
       group: 'details',
-      description: 'Örnek: 20 × 20 cm  veya  Ø 25 cm (tabak için)',
+      description:
+        'Örnek TR: "44 × 44 cm (çerçeveli)" veya "Ø 30 cm" (tabak için) — EN: "44 × 44 cm (framed)"',
     },
     {
       name: 'technique',

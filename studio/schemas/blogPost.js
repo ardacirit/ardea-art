@@ -63,7 +63,8 @@ export const blogPost = {
       name: 'readingTime',
       title: 'Okuma Süresi (dakika)',
       type: 'number',
-      initialValue: 5,
+      description: 'Kabaca her 200 kelime 1 dakika. Kısa bir yazı için 2 yazmanız yeterli.',
+      initialValue: 2,
     },
   ],
   preview: {

@@ -83,7 +83,8 @@ export default async function ArtworkPage({ params }) {
 
   const specs = [
     { label: localized(ui.artwork.year, lang), value: artwork.year },
-    { label: localized(ui.artwork.dimensions, lang), value: artwork.dimensions },
+    // localized() also accepts the older plain-string values
+    { label: localized(ui.artwork.dimensions, lang), value: localized(artwork.dimensions, lang) },
     { label: localized(ui.artwork.technique, lang), value: localized(artwork.technique, lang) },
   ].filter((spec) => spec.value)
 
